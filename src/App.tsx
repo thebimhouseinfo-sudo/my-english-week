@@ -62,7 +62,7 @@ export function getAvatarSpriteStyles(avatar: string) {
   const x = col === 0 ? 0 : (col / 3) * 100;
   const y = row === 0 ? 0 : (row / 2) * 100;
   return {
-    backgroundImage: "url('/avatar.png')",
+    backgroundImage: "url('avatar.png')",
     backgroundSize: '400% 300%',
     backgroundPosition: `${x}% ${y}%`,
     backgroundRepeat: 'no-repeat',
@@ -512,7 +512,7 @@ export default function App() {
                     <div 
                       className="w-full md:w-5/12 aspect-video md:aspect-[4/3] rounded-[2rem] border-4 border-white/60 overflow-hidden relative shadow-md shrink-0 bg-[#FFF8EE]"
                       style={{
-                        backgroundImage: "url('/Scenes.png')",
+                        backgroundImage: "url('Scenes.png')",
                         backgroundSize: '100% 1100%',
                         backgroundPosition: `0% ${getHeroFrameIndex(selectedDayOnHome) * 10}%`,
                         backgroundRepeat: 'no-repeat',

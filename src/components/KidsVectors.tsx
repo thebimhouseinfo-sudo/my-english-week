@@ -22,7 +22,7 @@ export const SpriteIllustration: React.FC<{ frameIndex: number; className?: stri
     <div 
       className={`w-full rounded-[1.5rem] border-4 border-white shadow-lg bg-sky-50 transition-all duration-300 relative overflow-hidden bento-shadow ${responsiveClassName}`}
       style={{
-        backgroundImage: 'url(/Scenes.png)',
+        backgroundImage: 'url(Scenes.png)',
         backgroundSize: '100% 1100%',
         backgroundPosition: backgroundPosition,
         backgroundRepeat: 'no-repeat',

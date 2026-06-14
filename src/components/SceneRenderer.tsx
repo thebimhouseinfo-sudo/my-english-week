@@ -386,7 +386,7 @@ export default function SceneRenderer({
           animate={{ opacity: 1 }}
           className="w-full relative transition-all duration-300 bg-[#FFF8EE]"
           style={{
-            backgroundImage: "url('/Scenes.png')",
+            backgroundImage: "url('Scenes.png')",
             backgroundSize: '100% 1100%',
             backgroundPosition: `0% ${getFrameIndex() * 10}%`,
             backgroundRepeat: 'no-repeat',

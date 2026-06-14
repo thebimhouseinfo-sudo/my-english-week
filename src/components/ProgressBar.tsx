@@ -37,7 +37,7 @@ const ProgressSpriteIcon: React.FC<{ frameIndex: number; fallbackEmoji: string; 
     <div className={`relative ${className} flex items-center justify-center`}>
       {/* Hidden image probe to test if Icons.png exists on server / public folder */}
       <img
-        src="/Icons.png"
+        src="Icons.png"
         alt=""
         style={{ display: 'none' }}
         onError={() => setHasError(true)}
@@ -45,7 +45,7 @@ const ProgressSpriteIcon: React.FC<{ frameIndex: number; fallbackEmoji: string; 
       <div
         className="w-full h-full bg-no-repeat transition-all duration-300"
         style={{
-          backgroundImage: "url('/Icons.png')",
+          backgroundImage: "url('Icons.png')",
           backgroundSize: '400% 300%',
           backgroundPosition: `${posX} ${posY}`,
         }}
