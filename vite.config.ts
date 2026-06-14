@@ -6,6 +6,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
+    base: '/my-english-week/',
+
     plugins: [
       react(),
       tailwindcss(),
