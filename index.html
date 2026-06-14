@@ -32,6 +32,16 @@
           e.preventDefault();
         }
       }, { passive: false });
+
+      // iOS Audio Unlock Script
+      const unlockAudio = () => {
+        const audio = new Audio();
+        audio.play().catch(() => {});
+        document.removeEventListener('touchstart', unlockAudio);
+        document.removeEventListener('click', unlockAudio);
+      };
+      document.addEventListener('touchstart', unlockAudio);
+      document.addEventListener('click', unlockAudio);
     </script>
     <style>
       /* Force system-wide light mode & eliminate user selection */

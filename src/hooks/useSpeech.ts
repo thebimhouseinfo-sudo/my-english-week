@@ -93,17 +93,17 @@ export function useSpeech(): SpeechEngine {
 
     uniqueCandidates.forEach(c => {
       // 1. Standard candidate in the lesson audio directory
-      paths.push(`/audio/lesson/${encodeURIComponent(c)}.mp3`);
+      paths.push(`audio/lesson/${encodeURIComponent(c)}.mp3`);
       
       // 2. Extra smart candidates for single words
       if (isSingleWord) {
         // Try dedicated words folder
-        paths.push(`/audio/words/${encodeURIComponent(c)}.mp3`);
+        paths.push(`audio/words/${encodeURIComponent(c)}.mp3`);
         
         // Try capitalized words (e.g. "brush" -> "Brush.mp3") in both folders
         const capitalized = c.charAt(0).toUpperCase() + c.slice(1);
-        paths.push(`/audio/words/${encodeURIComponent(capitalized)}.mp3`);
-        paths.push(`/audio/lesson/${encodeURIComponent(capitalized)}.mp3`);
+        paths.push(`audio/words/${encodeURIComponent(capitalized)}.mp3`);
+        paths.push(`audio/lesson/${encodeURIComponent(capitalized)}.mp3`);
       }
     });
 
@@ -127,7 +127,9 @@ export function useSpeech(): SpeechEngine {
     }
 
     const url = urls[index];
-    const audio = new Audio(url);
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.src = url;
     audioRef.current = audio;
 
     let isDone = false;
@@ -140,9 +142,10 @@ export function useSpeech(): SpeechEngine {
       if (onEnd) onEnd();
     };
 
-    audio.onerror = () => {
+    audio.onerror = (err) => {
       if (isDone) return;
       isDone = true;
+      console.error(`Audio load error for ${url}:`, err);
       audioRef.current = null;
       // Try the next MP3 file candidate
       playAudioSequence(urls, index + 1, onEnd, fallback);
@@ -155,7 +158,8 @@ export function useSpeech(): SpeechEngine {
       .catch((err) => {
         if (isDone) return;
         isDone = true;
-        console.log(`Audio play prevented or file not found: ${url}. Trying next candidate...`);
+        console.error(`Audio play prevented or file not found: ${url}. Error details:`, err);
+        console.log(`Trying next candidate...`);
         audioRef.current = null;
         // Try the next MP3 file candidate
         playAudioSequence(urls, index + 1, onEnd, fallback);
