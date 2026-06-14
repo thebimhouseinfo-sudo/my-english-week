@@ -163,7 +163,7 @@ export default function DailyReview({
   // Handle Practice Repeating in Questions section
   const handleRecordQuestion = (index: number, answerText: string) => {
     sounds.playMicBeep();
-    speech.startListening(answerText, (transcript, score) => {
+    speech.startListening(answerText, `q_${index}`, (transcript, score) => {
       sounds.playTwinkle();
       updateDayState(prev => {
         const newQA = [...prev.questionsAnswers];
@@ -175,6 +175,13 @@ export default function DailyReview({
         };
         return { ...prev, questionsAnswers: newQA };
       });
+      
+      if (score >= 3) {
+        setTimeout(() => {
+          setActiveQuestionIndex(curr => (curr === index && curr < 4) ? curr + 1 : curr);
+        }, 1500);
+      }
+
       if (onSpeechReport) {
         onSpeechReport(answerText, score);
       }
@@ -184,7 +191,7 @@ export default function DailyReview({
   // Handle Timeline narration practice
   const handleRecordTimeline = (index: number, targetText: string) => {
     sounds.playMicBeep();
-    speech.startListening(targetText, (transcript, score) => {
+    speech.startListening(targetText, `t_${index}`, (transcript, score) => {
       sounds.playTwinkle();
       updateDayState(prev => {
         const newTimeline = [...prev.timelineSentences];
@@ -196,6 +203,13 @@ export default function DailyReview({
         };
         return { ...prev, timelineSentences: newTimeline };
       });
+      
+      if (score >= 3) {
+        setTimeout(() => {
+          setActiveTimelineIndex(curr => (curr === index && curr < 4) ? curr + 1 : curr);
+        }, 1500);
+      }
+
       if (onSpeechReport) {
         onSpeechReport(targetText, score);
       }
@@ -210,11 +224,14 @@ export default function DailyReview({
       newQA[activeQuestionIndex] = {
         ...newQA[activeQuestionIndex],
         recordingState: 'completed',
-        stars: 3, // Perfect auto pass
+        stars: 4, // Perfect auto pass
         transcript: newQA[activeQuestionIndex].answer
       };
       return { ...prev, questionsAnswers: newQA };
     });
+    setTimeout(() => {
+      setActiveQuestionIndex(curr => curr < 4 ? curr + 1 : curr);
+    }, 1000);
   };
 
   const autoPassActiveTimeline = () => {
@@ -224,11 +241,14 @@ export default function DailyReview({
       newTimeline[activeTimelineIndex] = {
         ...newTimeline[newTimeline.length - 1] ? newTimeline[activeTimelineIndex] : newTimeline[activeTimelineIndex],
         recordingState: 'completed',
-        stars: 3,
+        stars: 4,
         transcript: newTimeline[activeTimelineIndex].text
       };
       return { ...prev, timelineSentences: newTimeline };
     });
+    setTimeout(() => {
+      setActiveTimelineIndex(curr => curr < 4 ? curr + 1 : curr);
+    }, 1000);
   };
 
   // Compute stats

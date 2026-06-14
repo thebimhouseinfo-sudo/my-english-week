@@ -240,33 +240,35 @@ export default function SceneRenderer({
   const isLineConquered = (lineId: string): boolean => {
     const record = completedLines[lineId];
     if (!record) return false;
-    // ⭐⭐⭐⭐ (4 stars) and ⭐⭐⭐⭐⭐ (5 stars) unlock immediately. Otherwise, need cumulative practicePoints >= 3
-    return record.stars >= 4 || (record.practicePoints !== undefined && record.practicePoints >= 3);
+    // ⭐⭐⭐⭐ (4 stars) and ⭐⭐⭐⭐⭐ (5 stars) unlock immediately. Otherwise, need cumulative practicePoints >= 5
+    return record.stars >= 4 || (record.practicePoints !== undefined && record.practicePoints >= 5);
   };
 
   // Handle Recording and Mic logic
   const triggerListening = (targetText: string, lineId: string) => {
     sounds.playMicBeep();
-    speech.startListening(targetText, (transcript, score) => {
+    speech.startListening(targetText, lineId, (transcript, score) => {
       sounds.playTwinkle();
       setCompletedLines(prev => {
         const prevRecord = prev[lineId] || { stars: 0, transcript: '', practicePoints: 0, conquered: false };
         const prevPoints = prevRecord.practicePoints || 0;
 
-        // ⭐      = không tính (score === 1)
-        // ⭐⭐     = +1 điểm luyện tập (score === 2)
-        // ⭐⭐⭐    = +2 điểm luyện tập (score === 3)
-        // ⭐⭐⭐⭐   = qua ngay (score === 4)
-        // ⭐⭐⭐⭐⭐ = qua ngay (score === 5)
-        let addedPoints = 0;
-        if (score === 2) {
-          addedPoints = 1;
-        } else if (score === 3) {
-          addedPoints = 2;
-        }
-
+        const addedPoints = score;
         const newPoints = prevPoints + addedPoints;
-        const conquered = (score >= 4) || (newPoints >= 3);
+        const conquered = (score >= 4) || (newPoints >= 5);
+
+        if (conquered) {
+          setTimeout(() => {
+            setActiveLineIndex(prevIdx => {
+              // Only auto advance if we are currently on this line
+              const thisLineIndex = lines.findIndex(l => l.id === lineId);
+              if (prevIdx === thisLineIndex && prevIdx < lines.length - 1) {
+                return prevIdx + 1;
+              }
+              return prevIdx;
+            });
+          }, 1500);
+        }
 
         return {
           ...prev,
@@ -529,9 +531,10 @@ export default function SceneRenderer({
                 <span className="text-amber-900 font-vietnamese font-black text-sm md:text-base mt-0.5 text-center leading-snug">
                   {completedLines[currentLine.id].stars === 5 && '🌟 Tuyệt vời! Phát âm hoàn hảo! Qua câu ngay lập tức!'}
                   {completedLines[currentLine.id].stars === 4 && '✨ Phát âm rành rọt! Qua câu ngay lập tức!'}
-                  {completedLines[currentLine.id].stars === 3 && '👍 Cần tích lũy 3 điểm luyện tập. Được +2 điểm'}
-                  {completedLines[currentLine.id].stars === 2 && '💪 Cần tích lũy 3 điểm luyện tập. Được +1 điểm'}
-                  {completedLines[currentLine.id].stars === 1 && '💡 Chưa tính lượt. Mời bé đọc lại 🎤'}
+                  {completedLines[currentLine.id].stars === 3 && '👍 Tốt lắm! Cần gom 5 điểm. Được +3 điểm'}
+                  {completedLines[currentLine.id].stars === 2 && '💪 Cố lên nhé! Cần gom 5 điểm. Được +2 điểm'}
+                  {completedLines[currentLine.id].stars === 1 && '💡 Nháp thử thôi! Cần gom 5 điểm. Được +1 điểm'}
+                  {completedLines[currentLine.id].stars === 0 && '❌ Đọc lại nhé bé ơi! Được 0 điểm. (Đọc 4 lần tự qua)'}
                 </span>
                 {completedLines[currentLine.id].transcript && (
                   <span className="text-xs text-slate-500 font-vietnamese italic font-semibold">
@@ -547,7 +550,7 @@ export default function SceneRenderer({
                     </span>
                     <div className="flex items-center gap-2 text-lg font-black text-amber-900">
                       <div className="flex gap-1">
-                        {Array.from({ length: 3 }).map((_, idx) => {
+                        {Array.from({ length: 5 }).map((_, idx) => {
                           const currentPoints = completedLines[currentLine.id].practicePoints || 0;
                           return (
                             <span key={idx} className="transition-all duration-300">
@@ -557,16 +560,16 @@ export default function SceneRenderer({
                         })}
                       </div>
                       <span className="text-xs font-black text-slate-600 font-vietnamese">
-                        ({completedLines[currentLine.id].practicePoints || 0}/3 điểm)
+                        ({completedLines[currentLine.id].practicePoints || 0}/5 điểm)
                       </span>
                     </div>
-                    {(completedLines[currentLine.id].practicePoints || 0) >= 3 ? (
+                    {(completedLines[currentLine.id].practicePoints || 0) >= 5 ? (
                       <span className="text-[11px] font-black text-emerald-600 font-vietnamese mt-1.5 flex items-center gap-1">
-                        🎉 Đã tích lũy đủ 3 điểm để qua câu!
+                        🎉 Đã tích lũy đủ 5 điểm để qua câu!
                       </span>
                     ) : (
                       <span className="text-[10px] font-bold text-slate-500 font-vietnamese mt-1">
-                        Bé đọc thêm {3 - (completedLines[currentLine.id].practicePoints || 0)} điểm nữa là đủ điểm qua câu nha!
+                        Bé đọc thêm {5 - (completedLines[currentLine.id].practicePoints || 0)} điểm nữa là đủ điểm qua câu nha!
                       </span>
                     )}
                   </div>

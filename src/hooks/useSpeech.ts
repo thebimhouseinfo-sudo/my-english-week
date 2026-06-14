@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 export interface SpeechEngine {
   speak: (text: string, onEnd?: () => void) => void;
   stopSpeaking: () => void;
-  startListening: (expectedText: string, onResult: (transcript: string, score: number) => void) => void;
+  startListening: (expectedText: string, sentenceId: string, onResult: (transcript: string, score: number) => void) => void;
   stopListening: () => void;
   isListening: boolean;
   speechSupported: boolean;
@@ -208,27 +208,87 @@ export function useSpeech(): SpeechEngine {
   };
 
   const calculateScore = (expected: string, actual: string): number => {
-    const cleanStr = (s: string) => s.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"").replace(/\s+/g," ").trim();
-    const expWords = cleanStr(expected).split(' ');
-    const actWords = cleanStr(actual).split(' ');
+    // Basic number translation mapping for common times
+    const timeMap: Record<string, string> = {
+      "7 30": "seven thirty",
+      "7 20": "seven twenty",
+      "7 00": "seven o'clock",
+      "6 00": "six o'clock",
+      "6 05": "six oh five",
+      "6 15": "six fifteen",
+      "6 25": "six twenty five",
+      "6 35": "six thirty five",
+      "6 45": "six forty five",
+      "6 55": "six fifty five"
+    };
+
+    const stopWords = ["a", "an", "the", "is", "are", "am", "it", "its", "it's", "to", "at", "in", "on", "of", "for", "with", "my", "your", "his", "her"];
+
+    const normalize = (s: string) => {
+      if (!s) return "";
+      let res = s.toLowerCase();
+      
+      // Replace slashes, colons, dots between digits with spaces so "7:20", "7/20", "7.20" become "7 20"
+      res = res.replace(/(\d)[/:\.](\d)/g, "$1 $2");
+      
+      // Translate common time strings to words
+      Object.keys(timeMap).forEach(k => {
+        res = res.replace(new RegExp(k, 'g'), timeMap[k]);
+      });
+      
+      // Expand common contractions that might be misrecognized
+      res = res.replace(/it's/g, "it is");
+      res = res.replace(/i'm/g, "i am");
+      res = res.replace(/don't/g, "do not");
+      res = res.replace(/doesn't/g, "does not");
+      
+      // Remove all punctuation
+      res = res.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g," ");
+      
+      return res.replace(/\s+/g," ").trim();
+    };
+
+    const cleanAndFilter = (str: string) => {
+      const words = normalize(str).split(' ');
+      // Filter out stop words to focus on keywords (fuzzy matching)
+      const keywords = words.filter(w => !stopWords.includes(w) && w.length > 0);
+      // If filtering leaves it empty, fallback to original words
+      return keywords.length > 0 ? keywords : words.filter(w => w.length > 0);
+    };
+
+    const expWords = cleanAndFilter(expected);
+    const actWords = cleanAndFilter(actual);
     
-    let matches = 0;
-    expWords.forEach(w => {
-      if (actWords.includes(w)) {
-        matches++;
+    // Longest Common Subsequence to enforce order while allowing dropped/extra words
+    const m = expWords.length;
+    const n = actWords.length;
+    if (m === 0 || n === 0) return 0;
+
+    const dp = Array(m + 1).fill(0).map(() => Array(n + 1).fill(0));
+    
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        if (expWords[i - 1] === actWords[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
       }
-    });
+    }
     
-    const ratio = matches / expWords.length;
-    if (ratio >= 0.85) return 3; // 3 stars
-    if (ratio >= 0.5) return 2;  // 2 stars
-    if (ratio >= 0.15) return 1; // 1 star
+    const matches = dp[m][n];
+    const ratio = matches / m;
+    
+    if (ratio === 1.0) return 5; // 5 stars (perfect keyword match)
+    if (ratio >= 0.75) return 4; // 4 stars (great)
+    if (ratio >= 0.5) return 3;  // 3 stars (good)
+    if (ratio >= 0.25) return 2;  // 2 stars (okay)
+    if (ratio > 0) return 1;     // 1 star (needs practice)
     return 0;
   };
 
-  const startListening = (expectedText: string, onResult: (transcript: string, score: number) => void) => {
-    const key = expectedText.trim().toLowerCase();
-    attemptsRef.current[key] = (attemptsRef.current[key] || 0) + 1;
+  const startListening = (expectedText: string, sentenceId: string, onResult: (transcript: string, score: number) => void) => {
+    attemptsRef.current[sentenceId] = (attemptsRef.current[sentenceId] || 0) + 1;
     
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -253,9 +313,14 @@ export function useSpeech(): SpeechEngine {
       const transcript = event.results[0][0].transcript;
       const score = calculateScore(expectedText, transcript);
       
-      // If score is high or attempts >= 3, reset attempts
-      if (score >= 2 || attemptsRef.current[key] >= 3) {
-        attemptsRef.current[key] = 0;
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      
+      // If score is high or attempts >= 4, reset attempts
+      if (score >= 3 || attemptsRef.current[sentenceId] >= 4) {
+        attemptsRef.current[sentenceId] = 0;
       }
       
       onResult(transcript, score);
@@ -263,12 +328,16 @@ export function useSpeech(): SpeechEngine {
     
     rec.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error);
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
       setIsListening(false);
-      // If error is 'no-speech' or 'audio-capture' and attempts are high, we still trigger onResult with fallback score
-      if (attemptsRef.current[key] >= 3) {
-        attemptsRef.current[key] = 0;
-        // Auto pass: return empty transcript but 3 stars to let kids move on
-        onResult('', 3);
+      
+      // If error and attempts are high, trigger auto pass
+      if (attemptsRef.current[sentenceId] >= 4) {
+        attemptsRef.current[sentenceId] = 0;
+        // Auto pass: return empty transcript but 4 stars to let kids move on instantly
+        onResult('', 4);
       }
     };
     
