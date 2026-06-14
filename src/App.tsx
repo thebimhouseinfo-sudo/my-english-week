@@ -171,7 +171,7 @@ export default function App() {
   useEffect(() => {
     if (navState === 'welcome' && stats.kidName) {
       const timer = setTimeout(() => {
-        speech.speak(`Welcome back, ${stats.kidName}! Enjoy living your English week!`);
+        speech.speak(`Welcome back, ${stats.kidName}!`);
       }, 1000);
       return () => clearTimeout(timer);
     }
@@ -228,11 +228,7 @@ export default function App() {
       bestPhrases = bestPhrases.slice(0, 3);
 
       const nextComp = getCurrentCompanion(totalSentencesSpoken);
-      if (nextComp.emoji !== prev.avatar && (prev.totalSentencesSpoken || 0) < nextComp.unlockCount) {
-        setTimeout(() => {
-          speech.speak(`Fantastic! You unlocked a brand new friend companion: ${nextComp.name}!`);
-        }, 1500);
-      }
+      // Removed unlocking companion spoken notification to only keep welcome messages
 
       const updated: UserStats = {
         ...prev,
@@ -265,7 +261,7 @@ export default function App() {
     };
     
     setDayProgression(defaultProg);
-    speech.speak(`Let's start ${day}!`);
+    // Removed start day greeting voice output
   };
 
   // Move forward through scenes
@@ -284,7 +280,7 @@ export default function App() {
     } else {
       // Initiates the End-of-day Oral Review
       setNavState('review');
-      speech.speak("Time for daily review questions!");
+      // Removed transition to review greeting voice output
     }
   };
 
@@ -339,8 +335,7 @@ export default function App() {
     saveStats(newStats);
     setNavState('welcome');
     setSelectedDay(null);
-
-    speech.speak(`Congratulations! You passed ${selectedDay}!`);
+    // Removed congratulations passed voice output
   };
 
   // Reset entire score/streak to replay a brand new week!
@@ -353,7 +348,7 @@ export default function App() {
     setSelectedDay(null);
     setIsParentModalOpen(false);
     setParentModeUnlocked(false);
-    speech.speak("Progress cleared! Let's start a fresh new English week!");
+    // Removed progress cleared greeting voice output
   };
 
   const isWeekend = selectedDay === 'Saturday' || selectedDay === 'Sunday';
@@ -493,6 +488,7 @@ export default function App() {
                         bestPhrases: []
                       };
                       saveStats(newStats);
+                      speech.speak(`Welcome, ${tempName.trim()}!`);
                       handleStartDay('Monday');
                     }}
                     className="w-full py-4.5 bg-[#58CC02] border-b-6 border-green-700 text-white font-extrabold text-xl rounded-2xl shadow-lg cursor-pointer active:border-b-2 active:translate-y-1 block mt-2"
