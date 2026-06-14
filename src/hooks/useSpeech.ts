@@ -338,6 +338,9 @@ export function useSpeech(): SpeechEngine {
         attemptsRef.current[sentenceId] = 0;
         // Auto pass: return empty transcript but 4 stars to let kids move on instantly
         onResult('', 4);
+      } else {
+        // Fallback: trigger scorecard display with 0 stars for retry
+        onResult('', 0);
       }
     };
     
