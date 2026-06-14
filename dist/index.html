@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Bé Tập Nói Tiếng Anh</title>
+    <!-- Preconnect to GitHub Pages CDN for faster audio loading -->
+    <link rel="preconnect" href="https://<your-github-username>.github.io" crossorigin />
+    <script>
+      // Prevent right-click context menu
+      document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+      }, { capture: true });
+
+      // Prevent pinch-to-zoom gestures (double tap and two-finger pinch)
+      document.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+
+      // Prevent mouse wheel zooming (Ctrl + wheel)
+      document.addEventListener('wheel', (e) => {
+        if (e.ctrlKey) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      // iOS Safari audio fix: unlock audio on first user interaction
+      const unlockIOSAudio = () => {
+        // Create a silent audio element to unlock audio playback on iOS
+        const audio = new Audio();
+        audio.preload = 'auto';
+        // Try to play and immediately pause to unlock audio context
+        audio.play().catch(() => {
+          // Ignore errors - this is just an attempt to unlock
+        });
+        // Remove listeners after first interaction
+        document.removeEventListener('touchstart', unlockIOSAudio);
+        document.removeEventListener('click', unlockIOSAudio);
+      };
+      
+      document.addEventListener('touchstart', unlockIOSAudio, { passive: true });
+      document.addEventListener('click', unlockIOSAudio, { passive: true });
+    </script>
+    <style>
+      /* Force system-wide light mode & eliminate user selection */
+      html, body {
+        background-color: #FFF8EE !important;
+        color: #1e293b !important;
+        color-scheme: light !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -webkit-touch-callout: none !important;
+      }
+    </style>
+    <script type="module" crossorigin src="/my-english-week/assets/index-MaBJSDHJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/my-english-week/assets/index-Dszhtn5t.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+

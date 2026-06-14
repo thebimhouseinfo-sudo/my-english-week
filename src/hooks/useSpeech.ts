@@ -65,6 +65,7 @@ export function useSpeech(): SpeechEngine {
   /**
    * Helper to generate possible MP3 filenames for a given text.
    * Handles trailing punctuation and special characters safely.
+   * Uses relative paths to work correctly on GitHub Pages subdirectory deployment.
    */
   const getAudioCandidates = (text: string): string[] => {
     const clean = text.trim();
@@ -92,18 +93,19 @@ export function useSpeech(): SpeechEngine {
     const paths: string[] = [];
 
     uniqueCandidates.forEach(c => {
+      // Use relative paths (no leading slash) to work with GitHub Pages base URL
       // 1. Standard candidate in the lesson audio directory
-      paths.push(`/audio/lesson/${encodeURIComponent(c)}.mp3`);
+      paths.push(`audio/lesson/${encodeURIComponent(c)}.mp3`);
       
       // 2. Extra smart candidates for single words
       if (isSingleWord) {
         // Try dedicated words folder
-        paths.push(`/audio/words/${encodeURIComponent(c)}.mp3`);
+        paths.push(`audio/words/${encodeURIComponent(c)}.mp3`);
         
         // Try capitalized words (e.g. "brush" -> "Brush.mp3") in both folders
         const capitalized = c.charAt(0).toUpperCase() + c.slice(1);
-        paths.push(`/audio/words/${encodeURIComponent(capitalized)}.mp3`);
-        paths.push(`/audio/lesson/${encodeURIComponent(capitalized)}.mp3`);
+        paths.push(`audio/words/${encodeURIComponent(capitalized)}.mp3`);
+        paths.push(`audio/lesson/${encodeURIComponent(capitalized)}.mp3`);
       }
     });
 
@@ -127,12 +129,18 @@ export function useSpeech(): SpeechEngine {
     }
 
     const url = urls[index];
-    const audio = new Audio(url);
+    // Create audio element with preload and proper error handling for iOS
+    const audio = new Audio();
+    audio.preload = 'auto';
+    
+    // Set source after setting preload for better iOS compatibility
+    audio.src = url;
+    
     audioRef.current = audio;
 
     let isDone = false;
 
-    audio.onended = () => {
+    const cleanupAndFinish = () => {
       if (isDone) return;
       isDone = true;
       setSpeaking(false);
@@ -140,26 +148,34 @@ export function useSpeech(): SpeechEngine {
       if (onEnd) onEnd();
     };
 
-    audio.onerror = () => {
+    audio.onended = cleanupAndFinish;
+
+    audio.onerror = (e) => {
       if (isDone) return;
+      console.log(`Audio load/decode error: ${url}`, e);
       isDone = true;
       audioRef.current = null;
       // Try the next MP3 file candidate
       playAudioSequence(urls, index + 1, onEnd, fallback);
     };
 
-    audio.play()
-      .then(() => {
-        setSpeaking(true);
-      })
-      .catch((err) => {
-        if (isDone) return;
-        isDone = true;
-        console.log(`Audio play prevented or file not found: ${url}. Trying next candidate...`);
-        audioRef.current = null;
-        // Try the next MP3 file candidate
-        playAudioSequence(urls, index + 1, onEnd, fallback);
-      });
+    // Handle iOS Safari autoplay restrictions
+    const playPromise = audio.play();
+    
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setSpeaking(true);
+        })
+        .catch((err) => {
+          if (isDone) return;
+          console.log(`Audio play prevented: ${url}. Error:`, err.name, err.message);
+          isDone = true;
+          audioRef.current = null;
+          // Try the next MP3 file candidate
+          playAudioSequence(urls, index + 1, onEnd, fallback);
+        });
+    }
   };
 
   const speak = (text: string, onEnd?: () => void) => {
@@ -199,6 +215,9 @@ export function useSpeech(): SpeechEngine {
     if (candidates.length === 0) {
       playTTSFallback();
     } else {
+      // For iOS Safari, we need to handle user interaction requirement
+      // Try to play audio, and if it fails due to autoplay policy, fall back to TTS immediately
+      // The playAudioSequence already handles this with promise rejection
       playAudioSequence(candidates, 0, onEnd, playTTSFallback);
     }
   };

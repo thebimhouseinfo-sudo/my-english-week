@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Bé Tập Nói Tiếng Anh</title>
+    <!-- Preconnect to GitHub Pages CDN for faster audio loading -->
+    <link rel="preconnect" href="https://<your-github-username>.github.io" crossorigin />
     <script>
       // Prevent right-click context menu
       document.addEventListener('contextmenu', (e) => {
@@ -32,6 +34,23 @@
           e.preventDefault();
         }
       }, { passive: false });
+      
+      // iOS Safari audio fix: unlock audio on first user interaction
+      const unlockIOSAudio = () => {
+        // Create a silent audio element to unlock audio playback on iOS
+        const audio = new Audio();
+        audio.preload = 'auto';
+        // Try to play and immediately pause to unlock audio context
+        audio.play().catch(() => {
+          // Ignore errors - this is just an attempt to unlock
+        });
+        // Remove listeners after first interaction
+        document.removeEventListener('touchstart', unlockIOSAudio);
+        document.removeEventListener('click', unlockIOSAudio);
+      };
+      
+      document.addEventListener('touchstart', unlockIOSAudio, { passive: true });
+      document.addEventListener('click', unlockIOSAudio, { passive: true });
     </script>
     <style>
       /* Force system-wide light mode & eliminate user selection */

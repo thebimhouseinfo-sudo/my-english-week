@@ -1,8 +1,69 @@
+```
+# Dependencies
 node_modules/
-build/
-dist/
-coverage/
-.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.ENV
+.python-version
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
 *.log
-.env*
-!.env.example
+.git/modules/
+*.sublime-project
+*.sublime-workspace
+.pytest_cache/
+.mypy_cache/
+.hypothesis/
+.coverage*
+htmlcov/
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pyup.yml
+.bandit
+.isort.cfg
+.python-version
+.pre-commit-config.yaml
+.commitlint.yaml
+.nvmrc
+.eslintrc.json
+.stylelintrc.json
+.prettierrc
+.prettierignore
+.editorconfig
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+```
+
+Wait, I need to reconsider this. Looking at the file changes again:
+- Added: []
+- Deleted: []
+- Modified: ['index.html', 'src/hooks/useSpeech.ts']
+
+These are only source code files (.html, .ts). There are no build artifacts, dependencies, or temporary files in the changes. Following rule #6, if the changes contain only source/config files and no build artifacts, dependencies, or temp files, I should output an empty .gitignore.
+
+```
+
+```
