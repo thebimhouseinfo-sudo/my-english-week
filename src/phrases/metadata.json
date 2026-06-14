@@ -1,0 +1,260 @@
+{
+  "wake_up": {
+    "intent": "daily_routine.wake_up",
+    "scenario": ["wake_up"],
+    "tags": ["daily", "morning", "home"],
+    "difficulty": 1
+  },
+  "brush_teeth": {
+    "intent": "daily_routine.brush_teeth",
+    "scenario": ["bathroom"],
+    "tags": ["daily", "bathroom"],
+    "difficulty": 1
+  },
+  "wash_face": {
+    "intent": "daily_routine.wash_face",
+    "scenario": ["bathroom"],
+    "tags": ["daily", "bathroom"],
+    "difficulty": 1
+  },
+  "get_dressed": {
+    "intent": "daily_routine.get_dressed",
+    "scenario": ["getting_dressed"],
+    "tags": ["daily"],
+    "difficulty": 1
+  },
+  "breakfast": {
+    "intent": "daily_routine.breakfast",
+    "scenario": ["breakfast"],
+    "tags": ["daily", "food"],
+    "difficulty": 1
+  },
+  "check_time": {
+    "intent": "daily_routine.check_time",
+    "scenario": ["wake_up", "go_to_school"],
+    "tags": ["daily", "time"],
+    "difficulty": 1
+  },
+  "go_to_school": {
+    "intent": "daily_routine.go_school",
+    "scenario": ["go_to_school"],
+    "tags": ["school"],
+    "difficulty": 1
+  },
+  "go_home": {
+    "intent": "daily_routine.go_home",
+    "scenario": ["go_home"],
+    "tags": ["daily"],
+    "difficulty": 1
+  },
+  "play": {
+    "intent": "daily_routine.play",
+    "scenario": ["go_home"],
+    "tags": ["daily"],
+    "difficulty": 1
+  },
+  "study": {
+    "intent": "daily_routine.study",
+    "scenario": ["go_home", "classroom"],
+    "tags": ["school"],
+    "difficulty": 2
+  },
+  "dinner": {
+    "intent": "daily_routine.dinner",
+    "scenario": ["dinner"],
+    "tags": ["daily", "food"],
+    "difficulty": 1
+  },
+  "sleep": {
+    "intent": "daily_routine.sleep",
+    "scenario": ["bedtime"],
+    "tags": ["daily", "bedroom"],
+    "difficulty": 1
+  },
+  "greeting_morning": {
+    "intent": "social.greeting.morning",
+    "scenario": ["wake_up", "breakfast"],
+    "tags": ["social"],
+    "difficulty": 1
+  },
+  "greeting_general": {
+    "intent": "social.greeting.general",
+    "scenario": ["go_to_school", "classroom"],
+    "tags": ["social"],
+    "difficulty": 1
+  },
+  "farewell": {
+    "intent": "social.farewell",
+    "scenario": ["go_to_school", "bedtime"],
+    "tags": ["social"],
+    "difficulty": 1
+  },
+  "thank_you": {
+    "intent": "social.thank_you",
+    "scenario": ["breakfast", "dinner"],
+    "tags": ["social", "politeness"],
+    "difficulty": 1
+  },
+  "politeness": {
+    "intent": "social.politeness",
+    "scenario": ["breakfast", "classroom"],
+    "tags": ["social", "politeness"],
+    "difficulty": 1
+  },
+  "apology": {
+    "intent": "social.apology",
+    "scenario": ["classroom"],
+    "tags": ["social", "politeness"],
+    "difficulty": 1
+  },
+  "agree": {
+    "intent": "social.agree",
+    "scenario": ["classroom", "breakfast"],
+    "tags": ["social"],
+    "difficulty": 1
+  },
+  "disagree": {
+    "intent": "social.disagree",
+    "scenario": ["classroom"],
+    "tags": ["social"],
+    "difficulty": 2
+  },
+  "introduction": {
+    "intent": "social.introduction",
+    "scenario": ["go_to_school", "classroom"],
+    "tags": ["social"],
+    "difficulty": 1
+  },
+  "preference": {
+    "intent": "social.preference",
+    "scenario": ["classroom", "dinner"],
+    "tags": ["social"],
+    "difficulty": 2
+  },
+  "observation": {
+    "intent": "social.observation",
+    "scenario": ["go_to_school", "go_home"],
+    "tags": ["social", "outdoor"],
+    "difficulty": 1
+  },
+  "ask_food": {
+    "intent": "request.ask_food",
+    "scenario": ["breakfast", "dinner"],
+    "tags": ["food"],
+    "difficulty": 1
+  },
+  "ask_help": {
+    "intent": "request.ask_help",
+    "scenario": ["house_chores"],
+    "tags": ["housework"],
+    "difficulty": 1
+  },
+  "sweep": {
+    "intent": "housework.sweep",
+    "scenario": ["house_chores"],
+    "tags": ["housework"],
+    "difficulty": 2
+  },
+  "water_plants": {
+    "intent": "housework.water_plants",
+    "scenario": ["house_chores"],
+    "tags": ["housework"],
+    "difficulty": 2
+  },
+  "fold_clothes": {
+    "intent": "housework.fold_clothes",
+    "scenario": ["house_chores"],
+    "tags": ["housework"],
+    "difficulty": 2
+  },
+  "wash_dishes": {
+    "intent": "housework.wash_dishes",
+    "scenario": ["house_chores", "dinner"],
+    "tags": ["housework", "kitchen"],
+    "difficulty": 2
+  },
+  "general_chores": {
+    "intent": "housework.general_chores",
+    "scenario": ["house_chores"],
+    "tags": ["housework"],
+    "difficulty": 2
+  },
+  "housework_general": {
+    "intent": "housework.general",
+    "scenario": ["house_chores"],
+    "tags": ["housework"],
+    "difficulty": 1
+  },
+  "classroom_reading": {
+    "intent": "classroom.reading",
+    "scenario": ["classroom"],
+    "tags": ["school"],
+    "difficulty": 2
+  },
+  "classroom_math": {
+    "intent": "classroom.math",
+    "scenario": ["classroom"],
+    "tags": ["school"],
+    "difficulty": 2
+  },
+  "classroom_art": {
+    "intent": "classroom.art",
+    "scenario": ["classroom"],
+    "tags": ["school"],
+    "difficulty": 2
+  },
+  "classroom_music": {
+    "intent": "classroom.music",
+    "scenario": ["classroom"],
+    "tags": ["school"],
+    "difficulty": 2
+  },
+  "classroom_pe": {
+    "intent": "classroom.pe",
+    "scenario": ["classroom"],
+    "tags": ["school"],
+    "difficulty": 2
+  },
+  "classroom_general": {
+    "intent": "classroom.general",
+    "scenario": ["classroom"],
+    "tags": ["school"],
+    "difficulty": 1
+  },
+  "emotion_happy": {
+    "intent": "emotion.happy",
+    "scenario": ["breakfast", "go_to_school", "house_chores"],
+    "tags": ["emotion"],
+    "difficulty": 1
+  },
+  "emotion_sad": {
+    "intent": "emotion.sad",
+    "scenario": ["classroom", "go_home"],
+    "tags": ["emotion"],
+    "difficulty": 1
+  },
+  "emotion_excited": {
+    "intent": "emotion.excited",
+    "scenario": ["go_to_school"],
+    "tags": ["emotion"],
+    "difficulty": 1
+  },
+  "emotion_physical": {
+    "intent": "emotion.physical",
+    "scenario": ["breakfast", "dinner", "bedtime"],
+    "tags": ["emotion"],
+    "difficulty": 1
+  },
+  "emotion_sick": {
+    "intent": "emotion.sick",
+    "scenario": ["bedtime", "wake_up"],
+    "tags": ["emotion", "health"],
+    "difficulty": 2
+  },
+  "safety": {
+    "intent": "safety.warning",
+    "scenario": ["go_to_school", "go_home"],
+    "tags": ["safety", "outdoor"],
+    "difficulty": 1
+  }
+}

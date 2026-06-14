@@ -1,0 +1,122 @@
+[
+  {
+    "id": "tell_time",
+    "template_en": "It's {time}.",
+    "template_vi": "Bây giờ là {time}.",
+    "intent": "daily_routine.check_time",
+    "variables": {
+      "time": [
+        "6:00",
+        "6:30",
+        "7:00",
+        "7:30",
+        "8:30"
+      ]
+    },
+    "tags": ["daily", "time", "easy"]
+  },
+  {
+    "id": "wake_up_at",
+    "template_en": "I wake up at {time}.",
+    "template_vi": "Con thức dậy lúc {time}.",
+    "intent": "daily_routine.wake_up",
+    "variables": {
+      "time": [
+        "six o'clock",
+        "six thirty",
+        "seven o'clock"
+      ]
+    },
+    "tags": ["daily", "time", "morning"]
+  },
+  {
+    "id": "ask_food",
+    "template_en": "Can I have some {food}, please?",
+    "template_vi": "Con ăn/uống {food} được không ạ?",
+    "intent": "request.ask_food",
+    "variables": {
+      "food": [
+        "milk",
+        "cake",
+        "water",
+        "juice",
+        "rice",
+        "soup"
+      ]
+    },
+    "tags": ["food", "request", "polite"]
+  },
+  {
+    "id": "want_food",
+    "template_en": "I want some {food}.",
+    "template_vi": "Con muốn {food} ạ.",
+    "intent": "request.ask_food",
+    "variables": {
+      "food": [
+        "juice",
+        "soup",
+        "milk",
+        "bread",
+        "eggs"
+      ]
+    },
+    "tags": ["food", "kitchen"]
+  },
+  {
+    "id": "look_at_nature",
+    "template_en": "Look at the {object}!",
+    "template_vi": "Hãy nhìn {object} kìa!",
+    "intent": "classroom.general",
+    "variables": {
+      "object": [
+        "sky",
+        "clouds",
+        "sun",
+        "moon"
+      ]
+    },
+    "tags": ["nature", "outdoor"]
+  },
+  {
+    "id": "play_instrument",
+    "template_en": "Play the {instrument}!",
+    "template_vi": "Chơi đàn {instrument} kìa!",
+    "intent": "classroom.music",
+    "variables": {
+      "instrument": [
+        "piano",
+        "drums",
+        "guitar"
+      ]
+    },
+    "tags": ["music", "art"]
+  },
+  {
+    "id": "stay_with_person",
+    "template_en": "Stay with {person}.",
+    "template_vi": "Ở lại với {person} nhé.",
+    "intent": "social.politeness",
+    "variables": {
+      "person": [
+        "me",
+        "Mom",
+        "Dad"
+      ]
+    },
+    "tags": ["safety", "family"]
+  },
+  {
+    "id": "hold_hand_person",
+    "template_en": "Hold {person} hand.",
+    "template_vi": "Nắm lấy tay {person} nhé.",
+    "intent": "social.politeness",
+    "variables": {
+      "person": [
+        "my",
+        "Mom's",
+        "Dad's"
+      ]
+    },
+    "tags": ["safety", "family"]
+  }
+]

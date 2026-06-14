@@ -1,0 +1,114 @@
+{
+  "wake_up": [
+    {
+      "id": "q_wake_up",
+      "question": "What time did you wake up?",
+      "expectedIntent": "daily_routine.wake_up"
+    }
+  ],
+  "bathroom": [
+    {
+      "id": "q_bathroom",
+      "question": "What did you do in the bathroom?",
+      "expectedIntent": "daily_routine.brush_teeth"
+    }
+  ],
+  "get_dressed": [
+    {
+      "id": "q_get_dressed",
+      "question": "What did you wear today?",
+      "expectedIntent": "daily_routine.get_dressed"
+    }
+  ],
+  "breakfast": [
+    {
+      "id": "q_breakfast",
+      "question": "What did you have for breakfast?",
+      "expectedIntent": "request.ask_food"
+    }
+  ],
+  "go_to_school": [
+    {
+      "id": "q_go_to_school",
+      "question": "Where did you go in the morning?",
+      "expectedIntent": "daily_routine.go_school"
+    }
+  ],
+  "classroom": [
+    {
+      "id": "q_classroom",
+      "question": "What did you do with your friend?",
+      "expectedIntent": "classroom.general"
+    }
+  ],
+  "go_home": [
+    {
+      "id": "q_go_home",
+      "question": "Where did you go after school?",
+      "expectedIntent": "daily_routine.go_home"
+    }
+  ],
+  "house_chores": [
+    {
+      "id": "q_house_chores",
+      "question": "How did you help around the house?",
+      "expectedIntent": "housework.sweep"
+    }
+  ],
+  "dinner": [
+    {
+      "id": "q_dinner",
+      "question": "What did you eat for dinner?",
+      "expectedIntent": "daily_routine.dinner"
+    }
+  ],
+  "bedtime": [
+    {
+      "id": "q_bedtime",
+      "question": "What did you do before sleeping?",
+      "expectedIntent": "daily_routine.sleep"
+    }
+  ],
+  "weekend_wake_up": [
+    {
+      "id": "q_weekend_wake_up",
+      "question": "What time did you wake up today?",
+      "expectedIntent": "daily_routine.wake_up"
+    }
+  ],
+  "weekend_breakfast": [
+    {
+      "id": "q_weekend_breakfast",
+      "question": "What did you want to eat today?",
+      "expectedIntent": "request.ask_food"
+    }
+  ],
+  "weekend_destination": [
+    {
+      "id": "q_weekend_destination",
+      "question": "Where did we choose to go today?",
+      "expectedIntent": "social.greeting.general"
+    }
+  ],
+  "weekend_adventure": [
+    {
+      "id": "q_weekend_adventure",
+      "question": "What animals or activities did you enjoy?",
+      "expectedIntent": "classroom.pe"
+    }
+  ],
+  "weekend_treat": [
+    {
+      "id": "q_weekend_treat",
+      "question": "How about your sweet weekend treat?",
+      "expectedIntent": "request.ask_food"
+    }
+  ],
+  "weekend_bedtime": [
+    {
+      "id": "q_weekend_bedtime",
+      "question": "How do you wish everyone a good night?",
+      "expectedIntent": "social.farewell"
+    }
+  ]
+}

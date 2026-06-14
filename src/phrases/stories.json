@@ -1,0 +1,32 @@
+[
+  {
+    "id": "weekday_adventure",
+    "name": "Weekday Learning Routine",
+    "description": "Thử thách một ngày đi học bằng tiếng Anh của trẻ",
+    "scenarios": [
+      "wake_up",
+      "bathroom",
+      "get_dressed",
+      "breakfast",
+      "check_time",
+      "go_school",
+      "classroom",
+      "house_chores",
+      "dinner",
+      "bedtime"
+    ]
+  },
+  {
+    "id": "weekend_adventure",
+    "name": "Weekend Outdoors Splash",
+    "description": "Trải nghiệm vui chơi dã ngoại ngày cuối tuần",
+    "scenarios": [
+      "weekend_wake_up",
+      "weekend_breakfast",
+      "weekend_destination",
+      "weekend_adventure",
+      "weekend_treat",
+      "weekend_bedtime"
+    ]
+  }
+]

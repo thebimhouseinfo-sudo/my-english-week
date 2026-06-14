@@ -1,0 +1,1662 @@
+[
+
+
+
+  {
+    "id": "i_wake_up",
+    "en": "I wake up.",
+    "vi": "Mình thức dậy.",
+    "intent": "daily_routine.wake_up",
+    "tags": ["daily", "home", "morning", "easy"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "wake up.", "meaning": "thức dậy." }
+    ]
+  },
+  {
+    "id": "i_wake_up_6",
+    "en": "I wake up at 6 o'clock.",
+    "vi": "Mình thức dậy lúc 6 giờ.",
+    "intent": "daily_routine.wake_up",
+    "tags": ["daily", "morning", "time"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "wake up", "meaning": "thức dậy" },
+      { "word": "at", "meaning": "vào lúc" },
+      { "word": "6 o'clock.", "meaning": "6 giờ." }
+    ]
+  },
+  {
+    "id": "i_wake_up_late_weekend",
+    "en": "I wake up late on weekends!",
+    "vi": "Con được ngủ dậy muộn vào ngày cuối tuần!",
+    "intent": "daily_routine.wake_up",
+    "tags": ["weekend", "morning"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "wake up", "meaning": "thức dậy" },
+      { "word": "late", "meaning": "muộn" },
+      { "word": "on weekends!", "meaning": "vào dịp cuối tuần!" }
+    ]
+  },
+  {
+    "id": "i_brush_teeth",
+    "en": "I brush my teeth.",
+    "vi": "Con đánh răng.",
+    "intent": "daily_routine.brush_teeth",
+    "tags": ["daily", "bathroom", "hygiene"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "brush", "meaning": "chải/đánh" },
+      { "word": "my", "meaning": "của mình" },
+      { "word": "teeth.", "meaning": "răng." }
+    ]
+  },
+  {
+    "id": "i_wash_face",
+    "en": "I wash my face.",
+    "vi": "Con rửa mặt.",
+    "intent": "daily_routine.wash_face",
+    "tags": ["daily", "bathroom", "hygiene"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "wash", "meaning": "rửa" },
+      { "word": "my", "meaning": "của mình" },
+      { "word": "face.", "meaning": "khuôn mặt." }
+    ]
+  },
+  {
+    "id": "please_wash_hands",
+    "en": "Please wash your hands.",
+    "vi": "Rửa tay đi nhé.",
+    "intent": "daily_routine.wash_face",
+    "tags": ["daily", "hygiene", "kitchen"],
+    "words": [
+      { "word": "Please", "meaning": "làm ơn" },
+      { "word": "wash your hands.", "meaning": "rửa tay của bạn." }
+    ]
+  },
+  {
+    "id": "i_get_dressed",
+    "en": "I get dressed.",
+    "vi": "Con tự mặc quần áo.",
+    "intent": "daily_routine.get_dressed",
+    "tags": ["daily", "bedroom", "clothes"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "get dressed.", "meaning": "mặc quần áo." }
+    ]
+  },
+  {
+    "id": "i_put_on_shirt",
+    "en": "I put on my shirt.",
+    "vi": "Con mặc áo phông vào.",
+    "intent": "daily_routine.get_dressed",
+    "tags": ["daily", "clothes"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "put on", "meaning": "mặc vào" },
+      { "word": "my", "meaning": "của mình" },
+      { "word": "shirt.", "meaning": "áo sơ mi." }
+    ]
+  },
+  {
+    "id": "i_put_on_shoes",
+    "en": "I put on my shoes.",
+    "vi": "Con đi giày xinh vào.",
+    "intent": "daily_routine.get_dressed",
+    "tags": ["daily", "clothes"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "put on", "meaning": "mặc vào" },
+      { "word": "my", "meaning": "của mình" },
+      { "word": "shoes.", "meaning": "đôi giày." }
+    ]
+  },
+  {
+    "id": "i_eat_breakfast",
+    "en": "I eat breakfast.",
+    "vi": "Mình ăn sáng.",
+    "intent": "daily_routine.breakfast",
+    "tags": ["daily", "food", "kitchen"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "eat", "meaning": "ăn" },
+      { "word": "breakfast.", "meaning": "bữa sáng." }
+    ]
+  },
+  {
+    "id": "i_eat_dinner",
+    "en": "I eat dinner.",
+    "vi": "Con ăn bữa tối ngon miệng.",
+    "intent": "daily_routine.dinner",
+    "tags": ["daily", "food", "kitchen"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "eat", "meaning": "ăn" },
+      { "word": "dinner.", "meaning": "bữa tối." }
+    ]
+  },
+  {
+    "id": "i_drink_water",
+    "en": "I drink water.",
+    "vi": "Con uống nước mát.",
+    "intent": "daily_routine.dinner",
+    "tags": ["daily", "food", "kitchen"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "drink", "meaning": "uống" },
+      { "word": "water.", "meaning": "nước." }
+    ]
+  },
+  {
+    "id": "i_play_with_friends",
+    "en": "I play with friends.",
+    "vi": "Mình chơi với bạn bè.",
+    "intent": "daily_routine.play",
+    "tags": ["daily", "social"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "play with", "meaning": "chơi cùng" },
+      { "word": "friends.", "meaning": "bạn bè." }
+    ]
+  },
+  {
+    "id": "i_do_homework",
+    "en": "I do my homework.",
+    "vi": "Mình làm bài tập về nhà.",
+    "intent": "daily_routine.study",
+    "tags": ["daily", "school"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "do", "meaning": "làm" },
+      { "word": "my homework.", "meaning": "bài tập về nhà." }
+    ]
+  },
+  {
+    "id": "i_go_to_bed",
+    "en": "I go to bed.",
+    "vi": "Con đi ngủ.",
+    "intent": "daily_routine.sleep",
+    "tags": ["daily", "bedroom", "night"],
+    "words": [
+      { "word": "I", "meaning": "Con / Mình" },
+      { "word": "go to bed.", "meaning": "đi ngủ." }
+    ]
+  },
+  {
+    "id": "i_sleep",
+    "en": "I sleep.",
+    "vi": "Mình ngủ.",
+    "intent": "daily_routine.sleep",
+    "tags": ["daily", "bedroom", "night"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "sleep.", "meaning": "ngủ." }
+    ]
+  },
+  {
+    "id": "time_for_bed",
+    "en": "Time for bed.",
+    "vi": "Đến giờ đi ngủ rồi.",
+    "intent": "daily_routine.sleep",
+    "tags": ["daily", "bedroom", "night"],
+    "words": [
+      { "word": "Time for", "meaning": "đến giờ" },
+      { "word": "bed.", "meaning": "đi ngủ." }
+    ]
+  },
+  {
+    "id": "i_need_to_go_to_bed",
+    "en": "I need to go to bed.",
+    "vi": "Mình cần đi ngủ.",
+    "intent": "daily_routine.sleep",
+    "tags": ["daily", "bedroom", "night"],
+    "words": [
+      { "word": "I need", "meaning": "Tôi cần" },
+      { "word": "to go to bed.", "meaning": "đi ngủ." }
+    ]
+  },
+  {
+    "id": "i_go_to_school",
+    "en": "I go to school.",
+    "vi": "Con đi tới trường học.",
+    "intent": "daily_routine.go_school",
+    "tags": ["school", "daily"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "go", "meaning": "đi" },
+      { "word": "to school.", "meaning": "tới trường." }
+    ]
+  },
+  {
+    "id": "school_starts_730",
+    "en": "School starts at 7:30.",
+    "vi": "Trường học bắt đầu lúc 7 giờ 30 phút.",
+    "intent": "daily_routine.go_school",
+    "tags": ["school", "time"],
+    "words": [
+      { "word": "School", "meaning": "Trường học" },
+      { "word": "starts", "meaning": "bắt đầu" },
+      { "word": "at", "meaning": "vào lúc" },
+      { "word": "7:30.", "meaning": "7 giờ 30 phút." }
+    ]
+  },
+  {
+    "id": "chore_go_home",
+    "en": "I go home.",
+    "vi": "Con đi học về nhà.",
+    "intent": "daily_routine.go_home",
+    "tags": ["daily", "home"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "go", "meaning": "đi" },
+      { "word": "home.", "meaning": "về nhà." }
+    ]
+  },
+
+
+
+  {
+    "id": "what_time_is_it",
+    "en": "What time is it?",
+    "vi": "Bây giờ là mấy giờ?",
+    "intent": "daily_routine.check_time",
+    "tags": ["daily", "time"],
+    "words": [
+      { "word": "What time", "meaning": "Mấy giờ" },
+      { "word": "is it?", "meaning": "bây giờ là?" }
+    ]
+  },
+  {
+    "id": "its_7_oclock",
+    "en": "It's 7 o'clock.",
+    "vi": "Bây giờ là 7 giờ.",
+    "intent": "daily_routine.check_time",
+    "tags": ["daily", "time"],
+    "words": [
+      { "word": "It's", "meaning": "Là" },
+      { "word": "7 o'clock.", "meaning": "7 giờ." }
+    ]
+  },
+  {
+    "id": "tell_time_twenty",
+    "en": "It's seven twenty.",
+    "vi": "Bây giờ là bảy giờ hai mươi.",
+    "intent": "daily_routine.check_time",
+    "tags": ["daily", "time"],
+    "words": [
+      { "word": "It's", "meaning": "Bây giờ là" },
+      { "word": "seven", "meaning": "bảy" },
+      { "word": "twenty.", "meaning": "hai mươi." }
+    ]
+  },
+  {
+    "id": "what_day_today",
+    "en": "What day is it today?",
+    "vi": "Hôm nay là thứ mấy?",
+    "intent": "daily_routine.check_time",
+    "tags": ["daily", "time"],
+    "words": [
+      { "word": "What day", "meaning": "Ngày nào" },
+      { "word": "is it today?", "meaning": "hôm nay là?" }
+    ]
+  },
+
+
+
+  {
+    "id": "good_morning",
+    "en": "Good morning!",
+    "vi": "Chào buổi sáng!",
+    "intent": "social.greeting.morning",
+    "tags": ["social", "greeting", "morning"],
+    "words": [
+      { "word": "Good", "meaning": "Tốt lành" },
+      { "word": "morning!", "meaning": "buổi sáng!" }
+    ]
+  },
+  {
+    "id": "good_afternoon",
+    "en": "Good afternoon!",
+    "vi": "Chào buổi chiều!",
+    "intent": "social.greeting.general",
+    "tags": ["social", "greeting"],
+    "words": [
+      { "word": "Good", "meaning": "Tốt đẹp" },
+      { "word": "afternoon!", "meaning": "Buổi chiều!" }
+    ]
+  },
+  {
+    "id": "good_evening",
+    "en": "Good evening!",
+    "vi": "Chào buổi tối!",
+    "intent": "social.greeting.general",
+    "tags": ["social", "greeting"],
+    "words": [
+      { "word": "Good", "meaning": "Tốt đẹp" },
+      { "word": "evening!", "meaning": "Buổi tối!" }
+    ]
+  },
+  {
+    "id": "good_night",
+    "en": "Good night.",
+    "vi": "Chúc con ngủ ngon nhé.",
+    "intent": "social.farewell",
+    "tags": ["social", "farewell", "night"],
+    "words": [
+      { "word": "Good", "meaning": "Chúc tốt lành" },
+      { "word": "night.", "meaning": "buổi tối." }
+    ]
+  },
+  {
+    "id": "sweet_dreams",
+    "en": "Sweet dreams!",
+    "vi": "Ngủ ngon nhé!",
+    "intent": "social.farewell",
+    "tags": ["social", "farewell", "night"],
+    "words": [
+      { "word": "Sweet", "meaning": "Ngọt ngào / Dễ thương" },
+      { "word": "dreams!", "meaning": "giấc mơ!" }
+    ]
+  },
+  {
+    "id": "friend_hi",
+    "en": "Hi!",
+    "vi": "A, chào bạn!",
+    "intent": "social.greeting.general",
+    "tags": ["social", "greeting"],
+    "words": [
+      { "word": "Hi!", "meaning": "Chào!" }
+    ]
+  },
+  {
+    "id": "how_are_you",
+    "en": "How are you?",
+    "vi": "Hôm nay bạn khỏe không?",
+    "intent": "social.greeting.general",
+    "tags": ["social", "greeting"],
+    "words": [
+      { "word": "How", "meaning": "Thế nào" },
+      { "word": "are you?", "meaning": "bạn khỏe không?" }
+    ]
+  },
+  {
+    "id": "i_am_fine",
+    "en": "I'm fine.",
+    "vi": "Mình khỏe, cảm ơn bạn!",
+    "intent": "social.greeting.general",
+    "tags": ["social", "greeting"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "fine.", "meaning": "khỏe/tốt." }
+    ]
+  },
+  {
+    "id": "nice_to_meet_you",
+    "en": "Nice to meet you!",
+    "vi": "Rất vui được gặp bạn!",
+    "intent": "social.greeting.general",
+    "tags": ["social", "greeting"],
+    "words": [
+      { "word": "Nice", "meaning": "Tốt đẹp / Vui vẻ" },
+      { "word": "to meet", "meaning": "được gặp" },
+      { "word": "you!", "meaning": "bạn!" }
+    ]
+  },
+  {
+    "id": "goodbye",
+    "en": "Goodbye!",
+    "vi": "Tạm biệt!",
+    "intent": "social.farewell",
+    "tags": ["social", "farewell"],
+    "words": [
+      { "word": "Goodbye!", "meaning": "Tạm biệt!" }
+    ]
+  },
+  {
+    "id": "see_you_later",
+    "en": "See you later!",
+    "vi": "Gặp lại sau nhé!",
+    "intent": "social.farewell",
+    "tags": ["social", "farewell"],
+    "words": [
+      { "word": "See you", "meaning": "Gặp lại bạn" },
+      { "word": "later!", "meaning": "sau nhé!" }
+    ]
+  },
+  {
+    "id": "see_you_tomorrow",
+    "en": "See you tomorrow!",
+    "vi": "Mai gặp lại nhé!",
+    "intent": "social.farewell",
+    "tags": ["social", "farewell"],
+    "words": [
+      { "word": "See you", "meaning": "Gặp lại bạn" },
+      { "word": "tomorrow!", "meaning": "ngày mai!" }
+    ]
+  },
+  {
+    "id": "have_a_good_day",
+    "en": "Have a good day!",
+    "vi": "Chúc một ngày vui!",
+    "intent": "social.farewell",
+    "tags": ["social", "farewell"],
+    "words": [
+      { "word": "Have", "meaning": "Có" },
+      { "word": "a good day!", "meaning": "một ngày tốt lành!" }
+    ]
+  },
+  {
+    "id": "take_care",
+    "en": "Take care!",
+    "vi": "Giữ sức khỏe nhé!",
+    "intent": "social.farewell",
+    "tags": ["social", "farewell"],
+    "words": [
+      { "word": "Take care!", "meaning": "Chăm sóc bản thân!" }
+    ]
+  },
+
+
+
+  {
+    "id": "please",
+    "en": "Please.",
+    "vi": "Làm ơn.",
+    "intent": "social.politeness",
+    "tags": ["politeness", "social"],
+    "words": [
+      { "word": "Please.", "meaning": "Làm ơn." }
+    ]
+  },
+  {
+    "id": "thank_you",
+    "en": "Thank you!",
+    "vi": "Cảm ơn!",
+    "intent": "social.thank_you",
+    "tags": ["politeness", "social"],
+    "words": [
+      { "word": "Thank you!", "meaning": "Cảm ơn!" }
+    ]
+  },
+  {
+    "id": "youre_welcome",
+    "en": "You're welcome!",
+    "vi": "Không có gì!",
+    "intent": "social.politeness",
+    "tags": ["politeness", "social"],
+    "words": [
+      { "word": "You're welcome!", "meaning": "Không có gì!" }
+    ]
+  },
+  {
+    "id": "im_sorry",
+    "en": "I'm sorry.",
+    "vi": "Mình xin lỗi.",
+    "intent": "social.apology",
+    "tags": ["politeness", "social"],
+    "words": [
+      { "word": "I'm sorry.", "meaning": "Tôi xin lỗi." }
+    ]
+  },
+  {
+    "id": "no_problem",
+    "en": "No problem!",
+    "vi": "Không sao đâu!",
+    "intent": "social.politeness",
+    "tags": ["politeness", "social"],
+    "words": [
+      { "word": "No problem!", "meaning": "Không vấn đề gì!" }
+    ]
+  },
+  {
+    "id": "excuse_me",
+    "en": "Excuse me.",
+    "vi": "Xin lỗi / Xin phép.",
+    "intent": "social.apology",
+    "tags": ["politeness", "social"],
+    "words": [
+      { "word": "Excuse me.", "meaning": "Xin lỗi / Xin phép." }
+    ]
+  },
+  {
+    "id": "thats_okay",
+    "en": "That's okay.",
+    "vi": "Không sao đâu.",
+    "intent": "social.politeness",
+    "tags": ["politeness", "social"],
+    "words": [
+      { "word": "That's okay.", "meaning": "Không sao cả." }
+    ]
+  },
+  {
+    "id": "breakfast_here_you_are",
+    "en": "Here you are.",
+    "vi": "Của con đây nè.",
+    "intent": "social.politeness",
+    "tags": ["parent", "politeness"],
+    "words": [
+      { "word": "Here you are.", "meaning": "Của con đây." }
+    ]
+  },
+
+
+
+  {
+    "id": "can_i_have_milk",
+    "en": "Can I have some milk, please?",
+    "vi": "Con uống sữa được không ạ?",
+    "intent": "request.ask_food",
+    "tags": ["food", "request", "kitchen"],
+    "words": [
+      { "word": "Can I have", "meaning": "Con có thể có" },
+      { "word": "some milk,", "meaning": "một ít sữa," },
+      { "word": "please?", "meaning": "được không?" }
+    ]
+  },
+  {
+    "id": "can_i_have_water",
+    "en": "Can I have some water, please?",
+    "vi": "Con uống nước được không ạ?",
+    "intent": "request.ask_food",
+    "tags": ["food", "request", "kitchen"],
+    "words": [
+      { "word": "Can I have", "meaning": "Con có thể có" },
+      { "word": "some water,", "meaning": "một ít nước," },
+      { "word": "please?", "meaning": "được không?" }
+    ]
+  },
+  {
+    "id": "can_i_have_rice",
+    "en": "Can I have some rice, please?",
+    "vi": "Con ăn cơm được không ạ?",
+    "intent": "request.ask_food",
+    "tags": ["food", "request", "kitchen"],
+    "words": [
+      { "word": "Can I have", "meaning": "Con có thể có" },
+      { "word": "some rice,", "meaning": "một ít cơm," },
+      { "word": "please?", "meaning": "được không?" }
+    ]
+  },
+  {
+    "id": "i_want_juice",
+    "en": "I want some juice.",
+    "vi": "Con muốn uống nước ép ạ.",
+    "intent": "request.ask_food",
+    "tags": ["food", "request", "kitchen"],
+    "words": [
+      { "word": "I want", "meaning": "Tôi muốn" },
+      { "word": "some juice.", "meaning": "một ít nước ép." }
+    ]
+  },
+  {
+    "id": "i_want_soup",
+    "en": "I want some soup.",
+    "vi": "Con muốn ăn súp ạ.",
+    "intent": "request.ask_food",
+    "tags": ["food", "request", "kitchen"],
+    "words": [
+      { "word": "I want", "meaning": "Tôi muốn" },
+      { "word": "some soup.", "meaning": "một ít súp." }
+    ]
+  },
+  {
+    "id": "what_for_breakfast",
+    "en": "What do you want for breakfast?",
+    "vi": "Con muốn ăn sáng món gì nào?",
+    "intent": "request.ask_food",
+    "tags": ["parent", "food", "kitchen"],
+    "words": [
+      { "word": "What", "meaning": "Món gì/Cái gì" },
+      { "word": "do you want", "meaning": "bạn muốn" },
+      { "word": "for breakfast?", "meaning": "cho bữa sáng?" }
+    ]
+  },
+  {
+    "id": "whats_for_dinner",
+    "en": "What's for dinner?",
+    "vi": "Bữa tối có gì ạ?",
+    "intent": "request.ask_food",
+    "tags": ["food", "kitchen"],
+    "words": [
+      { "word": "What's", "meaning": "Có gì" },
+      { "word": "for dinner?", "meaning": "cho bữa tối?" }
+    ]
+  },
+  {
+    "id": "this_is_delicious",
+    "en": "This is delicious!",
+    "vi": "Ngon quá!",
+    "intent": "emotion.happy",
+    "tags": ["food", "emotion"],
+    "words": [
+      { "word": "This", "meaning": "Cái này" },
+      { "word": "is delicious!", "meaning": "rất ngon!" }
+    ]
+  },
+  {
+    "id": "im_hungry",
+    "en": "I'm hungry.",
+    "vi": "Con đói.",
+    "intent": "emotion.physical",
+    "tags": ["food", "emotion"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "hungry.", "meaning": "đói." }
+    ]
+  },
+  {
+    "id": "im_thirsty",
+    "en": "I'm thirsty.",
+    "vi": "Con khát.",
+    "intent": "emotion.physical",
+    "tags": ["food", "emotion"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "thirsty.", "meaning": "khát." }
+    ]
+  },
+  {
+    "id": "im_full",
+    "en": "I'm full.",
+    "vi": "Mình no rồi.",
+    "intent": "emotion.physical",
+    "tags": ["food", "emotion"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "full.", "meaning": "no." }
+    ]
+  },
+  {
+    "id": "yes_you_can",
+    "en": "Yes, you can.",
+    "vi": "Được, bạn lấy được.",
+    "intent": "social.agree",
+    "tags": ["social", "permission"],
+    "words": [
+      { "word": "Yes,", "meaning": "Vâng," },
+      { "word": "you can.", "meaning": "bạn có thể." }
+    ]
+  },
+  {
+    "id": "no_you_cant",
+    "en": "No, you can't.",
+    "vi": "Không, bạn không được.",
+    "intent": "social.disagree",
+    "tags": ["social", "permission"],
+    "words": [
+      { "word": "No,", "meaning": "Không," },
+      { "word": "you can't.", "meaning": "bạn không thể." }
+    ]
+  },
+  {
+    "id": "sure",
+    "en": "Sure!",
+    "vi": "Chắc chắn rồi!",
+    "intent": "social.agree",
+    "tags": ["social", "permission"],
+    "words": [
+      { "word": "Sure!", "meaning": "Chắc chắn rồi!" }
+    ]
+  },
+  {
+    "id": "of_course",
+    "en": "Of course!",
+    "vi": "Tất nhiên rồi!",
+    "intent": "social.agree",
+    "tags": ["social", "permission"],
+    "words": [
+      { "word": "Of course!", "meaning": "Tất nhiên rồi!" }
+    ]
+  },
+
+
+
+  {
+    "id": "class_open_book",
+    "en": "Open your book.",
+    "vi": "Mở sách của con ra.",
+    "intent": "classroom.reading",
+    "tags": ["school", "classroom", "reading"],
+    "words": [
+      { "word": "Open", "meaning": "Mở" },
+      { "word": "your", "meaning": "của bạn" },
+      { "word": "book.", "meaning": "sách." }
+    ]
+  },
+  {
+    "id": "class_read_with_me",
+    "en": "Read with me.",
+    "vi": "Hãy đọc cùng thầy cô.",
+    "intent": "classroom.reading",
+    "tags": ["school", "classroom", "reading"],
+    "words": [
+      { "word": "Read", "meaning": "Đọc" },
+      { "word": "with me.", "meaning": "với thầy cô/tôi." }
+    ]
+  },
+  {
+    "id": "read_this_sentence",
+    "en": "Read this sentence.",
+    "vi": "Đọc câu này.",
+    "intent": "classroom.reading",
+    "tags": ["school", "classroom", "reading"],
+    "words": [
+      { "word": "Read", "meaning": "đọc" },
+      { "word": "this sentence.", "meaning": "câu này." }
+    ]
+  },
+  {
+    "id": "repeat_after_me",
+    "en": "Repeat after me.",
+    "vi": "Lặp lại sau mình.",
+    "intent": "classroom.reading",
+    "tags": ["school", "classroom"],
+    "words": [
+      { "word": "Repeat", "meaning": "lặp lại" },
+      { "word": "after me.", "meaning": "sau mình." }
+    ]
+  },
+  {
+    "id": "can_you_say_your_name",
+    "en": "Can you say your name?",
+    "vi": "Bạn có thể nói tên của bạn không?",
+    "intent": "classroom.general",
+    "tags": ["school", "classroom"],
+    "words": [
+      { "word": "Can", "meaning": "có thể" },
+      { "word": "you say", "meaning": "bạn nói" },
+      { "word": "your name?", "meaning": "tên của bạn?" }
+    ]
+  },
+  {
+    "id": "tell_me_about_your_day",
+    "en": "Tell me about your day.",
+    "vi": "Kể cho mình nghe về ngày của bạn.",
+    "intent": "classroom.general",
+    "tags": ["school", "classroom"],
+    "words": [
+      { "word": "Tell me", "meaning": "kể cho tôi" },
+      { "word": "about your day.", "meaning": "về ngày của bạn." }
+    ]
+  },
+  {
+    "id": "class_draw_cat",
+    "en": "Draw a cat.",
+    "vi": "Hãy vẽ một con mèo.",
+    "intent": "classroom.art",
+    "tags": ["school", "classroom", "art"],
+    "words": [
+      { "word": "Draw", "meaning": "Vẽ" },
+      { "word": "a cat.", "meaning": "một con mèo." }
+    ]
+  },
+  {
+    "id": "lets_draw_a_picture",
+    "en": "Let's draw a picture.",
+    "vi": "Chúng ta hãy vẽ một bức tranh.",
+    "intent": "classroom.art",
+    "tags": ["school", "classroom", "art"],
+    "words": [
+      { "word": "Let's", "meaning": "chúng ta hãy" },
+      { "word": "draw a picture.", "meaning": "vẽ một bức tranh." }
+    ]
+  },
+  {
+    "id": "paint_something_beautiful",
+    "en": "Paint something beautiful.",
+    "vi": "Vẽ thứ gì đó đẹp đẽ đi.",
+    "intent": "classroom.art",
+    "tags": ["school", "classroom", "art"],
+    "words": [
+      { "word": "Paint", "meaning": "vẽ" },
+      { "word": "something beautiful.", "meaning": "thứ gì đó đẹp đẽ." }
+    ]
+  },
+  {
+    "id": "class_draw_sun",
+    "en": "We draw a solar star.",
+    "vi": "Chúng ta cùng vẽ một ông mặt trời.",
+    "intent": "classroom.art",
+    "tags": ["school", "classroom", "art"],
+    "words": [
+      { "word": "We", "meaning": "Chúng ta" },
+      { "word": "draw", "meaning": "vẽ" },
+      { "word": "a solar star.", "meaning": "một ông mặt trời." }
+    ]
+  },
+  {
+    "id": "class_count_apples",
+    "en": "Count the apples.",
+    "vi": "Hãy đếm số táo nhé con.",
+    "intent": "classroom.math",
+    "tags": ["school", "classroom", "math"],
+    "words": [
+      { "word": "Count", "meaning": "Đếm" },
+      { "word": "the apples.", "meaning": "những quả táo." }
+    ]
+  },
+  {
+    "id": "count_with_me",
+    "en": "Count with me.",
+    "vi": "Đếm cùng mình.",
+    "intent": "classroom.math",
+    "tags": ["school", "classroom", "math"],
+    "words": [
+      { "word": "Count", "meaning": "đếm" },
+      { "word": "with me.", "meaning": "cùng mình." }
+    ]
+  },
+  {
+    "id": "how_many_apples",
+    "en": "How many apples are there?",
+    "vi": "Có bao nhiêu quả táo?",
+    "intent": "classroom.math",
+    "tags": ["school", "classroom", "math"],
+    "words": [
+      { "word": "How many", "meaning": "bao nhiêu" },
+      { "word": "apples are there?", "meaning": "quả táo ở đó?" }
+    ]
+  },
+  {
+    "id": "what_is_5_plus_3",
+    "en": "What is 5 plus 3?",
+    "vi": "5 cộng 3 bằng mấy?",
+    "intent": "classroom.math",
+    "tags": ["school", "classroom", "math"],
+    "words": [
+      { "word": "What is", "meaning": "bằng bao nhiêu" },
+      { "word": "5 plus 3?", "meaning": "5 cộng 3?" }
+    ]
+  },
+  {
+    "id": "class_listen_carefully",
+    "en": "Listen carefully.",
+    "vi": "Hãy lắng nghe thật kỹ.",
+    "intent": "classroom.general",
+    "tags": ["school", "classroom"],
+    "words": [
+      { "word": "Listen", "meaning": "Nghe" },
+      { "word": "carefully.", "meaning": "một cách cẩn thận." }
+    ]
+  },
+  {
+    "id": "raise_your_hand",
+    "en": "Raise your hand.",
+    "vi": "Giơ tay lên.",
+    "intent": "classroom.general",
+    "tags": ["school", "classroom"],
+    "words": [
+      { "word": "Raise", "meaning": "giơ lên" },
+      { "word": "your hand.", "meaning": "tay bạn." }
+    ]
+  },
+  {
+    "id": "sit_up_straight",
+    "en": "Sit up straight.",
+    "vi": "Ngồi thẳng lưng.",
+    "intent": "classroom.general",
+    "tags": ["school", "classroom"],
+    "words": [
+      { "word": "Sit up", "meaning": "ngồi thẳng" },
+      { "word": "straight.", "meaning": "lưng." }
+    ]
+  },
+  {
+    "id": "wait_your_turn",
+    "en": "Wait your turn.",
+    "vi": "Chờ đến lượt bạn.",
+    "intent": "classroom.general",
+    "tags": ["school", "classroom"],
+    "words": [
+      { "word": "Wait", "meaning": "chờ" },
+      { "word": "your turn.", "meaning": "đến lượt bạn." }
+    ]
+  },
+  {
+    "id": "class_run_together",
+    "en": "Let's run together.",
+    "vi": "Hãy cùng chạy nhảy nào.",
+    "intent": "classroom.pe",
+    "tags": ["school", "classroom", "pe"],
+    "words": [
+      { "word": "Let's", "meaning": "Chúng ta hãy" },
+      { "word": "run", "meaning": "chạy" },
+      { "word": "together.", "meaning": "cùng nhau." }
+    ]
+  },
+  {
+    "id": "run_around_field",
+    "en": "Run around the field.",
+    "vi": "Chạy quanh sân.",
+    "intent": "classroom.pe",
+    "tags": ["school", "classroom", "pe"],
+    "words": [
+      { "word": "Run", "meaning": "chạy" },
+      { "word": "around the field.", "meaning": "xung quanh sân." }
+    ]
+  },
+  {
+    "id": "jump_on_spot",
+    "en": "Jump on the spot.",
+    "vi": "Nhảy tại chỗ.",
+    "intent": "classroom.pe",
+    "tags": ["school", "classroom", "pe"],
+    "words": [
+      { "word": "Jump", "meaning": "nhảy" },
+      { "word": "on the spot.", "meaning": "tại chỗ." }
+    ]
+  },
+  {
+    "id": "catch_the_ball",
+    "en": "Catch the ball!",
+    "vi": "Bắt lấy quả bóng!",
+    "intent": "classroom.pe",
+    "tags": ["school", "classroom", "pe"],
+    "words": [
+      { "word": "Catch", "meaning": "bắt" },
+      { "word": "the ball!", "meaning": "quả bóng!" }
+    ]
+  },
+  {
+    "id": "kick_the_ball",
+    "en": "Kick the ball!",
+    "vi": "Đá quả bóng!",
+    "intent": "classroom.pe",
+    "tags": ["school", "classroom", "pe"],
+    "words": [
+      { "word": "Kick", "meaning": "đá" },
+      { "word": "the ball!", "meaning": "quả bóng!" }
+    ]
+  },
+  {
+    "id": "lets_play_tag",
+    "en": "Let's play tag!",
+    "vi": "Chúng ta chơi trò đuổi bắt nhé!",
+    "intent": "classroom.pe",
+    "tags": ["school", "classroom", "pe"],
+    "words": [
+      { "word": "Let's", "meaning": "chúng ta hãy" },
+      { "word": "play tag!", "meaning": "chơi trò chơi đuổi bắt!" }
+    ]
+  },
+  {
+    "id": "clap_your_hands",
+    "en": "Clap your hands!",
+    "vi": "Hãy vỗ tay!",
+    "intent": "classroom.music",
+    "tags": ["school", "classroom", "music"],
+    "words": [
+      { "word": "Clap", "meaning": "vỗ" },
+      { "word": "your hands!", "meaning": "tay!" }
+    ]
+  },
+  {
+    "id": "sing_with_me",
+    "en": "Sing with me!",
+    "vi": "Hát cùng mình!",
+    "intent": "classroom.music",
+    "tags": ["school", "classroom", "music"],
+    "words": [
+      { "word": "Sing", "meaning": "hát" },
+      { "word": "with me!", "meaning": "cùng mình!" }
+    ]
+  },
+  {
+    "id": "play_the_piano",
+    "en": "Play the piano!",
+    "vi": "Chơi đàn piano!",
+    "intent": "classroom.music",
+    "tags": ["school", "classroom", "music"],
+    "words": [
+      { "word": "Play", "meaning": "chơi" },
+      { "word": "the piano!", "meaning": "đàn piano!" }
+    ]
+  },
+
+
+
+  {
+    "id": "chore_help_me",
+    "en": "Can you help me?",
+    "vi": "Con có thể giúp mẹ một tay không?",
+    "intent": "request.ask_help",
+    "tags": ["parent", "chores"],
+    "words": [
+      { "word": "Can you", "meaning": "Bạn có thể" },
+      { "word": "help me?", "meaning": "giúp đỡ tôi không?" }
+    ]
+  },
+  {
+    "id": "its_time_to_help_chores",
+    "en": "It's time to help with the chores!",
+    "vi": "Đến lúc giúp làm việc nhà rồi!",
+    "intent": "housework.general",
+    "tags": ["housework", "parent"],
+    "words": [
+      { "word": "It's time", "meaning": "Đến lúc" },
+      { "word": "to help", "meaning": "giúp" },
+      { "word": "with the chores!", "meaning": "với việc nhà!" }
+    ]
+  },
+  {
+    "id": "youre_a_great_helper",
+    "en": "You're a great helper!",
+    "vi": "Con đúng là một người giúp đỡ tuyệt vời!",
+    "intent": "housework.general",
+    "tags": ["housework", "encouragement"],
+    "words": [
+      { "word": "You're", "meaning": "Bạn là" },
+      { "word": "a great", "meaning": "một người tuyệt vời" },
+      { "word": "helper!", "meaning": "giúp đỡ!" }
+    ]
+  },
+  {
+    "id": "good_job_helping",
+    "en": "Good job helping out!",
+    "vi": "Con làm tốt lắm khi giúp đỡ!",
+    "intent": "housework.general",
+    "tags": ["housework", "encouragement"],
+    "words": [
+      { "word": "Good job", "meaning": "Làm tốt lắm" },
+      { "word": "helping out!", "meaning": "khi giúp đỡ!" }
+    ]
+  },
+  {
+    "id": "chore_sweep_floor_req",
+    "en": "Sweep the floor, please.",
+    "vi": "Làm ơn quét nhà đi con.",
+    "intent": "housework.sweep",
+    "tags": ["parent", "chores", "sweeping"],
+    "words": [
+      { "word": "Sweep", "meaning": "Quét" },
+      { "word": "the floor,", "meaning": "sàn nhà," },
+      { "word": "please.", "meaning": "làm ơn." }
+    ]
+  },
+  {
+    "id": "chore_sweep_floor_act",
+    "en": "I sweep the floor.",
+    "vi": "Con quét sàn nhà.",
+    "intent": "housework.sweep",
+    "tags": ["chores", "sweeping"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "sweep", "meaning": "quét" },
+      { "word": "the floor.", "meaning": "sàn nhà." }
+    ]
+  },
+  {
+    "id": "use_broom_to_sweep",
+    "en": "Use the broom to sweep.",
+    "vi": "Dùng chổi để quét.",
+    "intent": "housework.sweep",
+    "tags": ["chores", "sweeping"],
+    "words": [
+      { "word": "Use", "meaning": "dùng" },
+      { "word": "the broom", "meaning": "chiếc chổi" },
+      { "word": "to sweep.", "meaning": "để quét." }
+    ]
+  },
+  {
+    "id": "mop_the_floor",
+    "en": "Mop the floor.",
+    "vi": "Hãy lau sàn nhà.",
+    "intent": "housework.sweep",
+    "tags": ["chores", "sweeping"],
+    "words": [
+      { "word": "Mop", "meaning": "lau nhà" },
+      { "word": "the floor.", "meaning": "sàn nhà." }
+    ]
+  },
+  {
+    "id": "wipe_the_table",
+    "en": "Wipe the table clean.",
+    "vi": "Lau bàn cho sạch.",
+    "intent": "housework.sweep",
+    "tags": ["chores", "kitchen"],
+    "words": [
+      { "word": "Wipe", "meaning": "lau" },
+      { "word": "the table", "meaning": "cái bàn" },
+      { "word": "clean.", "meaning": "cho sạch." }
+    ]
+  },
+  {
+    "id": "chore_fold_clothes_req",
+    "en": "Fold the clothes.",
+    "vi": "Gấp quần áo lại đi con.",
+    "intent": "housework.fold_clothes",
+    "tags": ["parent", "chores", "clothes"],
+    "words": [
+      { "word": "Fold", "meaning": "Gấp" },
+      { "word": "the clothes.", "meaning": "quần áo." }
+    ]
+  },
+  {
+    "id": "chore_fold_clothes_act",
+    "en": "I fold the clothes.",
+    "vi": "Con gấp quần áo.",
+    "intent": "housework.fold_clothes",
+    "tags": ["chores", "clothes"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "fold", "meaning": "gấp" },
+      { "word": "the clothes.", "meaning": "quần áo." }
+    ]
+  },
+  {
+    "id": "make_your_bed",
+    "en": "Make your bed.",
+    "vi": "Dọn giường của bạn.",
+    "intent": "housework.general_chores",
+    "tags": ["chores", "bedroom"],
+    "words": [
+      { "word": "Make", "meaning": "dọn" },
+      { "word": "your bed.", "meaning": "giường của bạn." }
+    ]
+  },
+  {
+    "id": "tidy_up_your_room",
+    "en": "Tidy up your room.",
+    "vi": "Dọn phòng gọn gàng.",
+    "intent": "housework.general_chores",
+    "tags": ["chores", "bedroom"],
+    "words": [
+      { "word": "Tidy up", "meaning": "dọn dẹp gọn gàng" },
+      { "word": "your room.", "meaning": "phòng của bạn." }
+    ]
+  },
+  {
+    "id": "chore_water_plants_req",
+    "en": "Water the plants, please.",
+    "vi": "Làm ơn tưới cây đi con.",
+    "intent": "housework.water_plants",
+    "tags": ["parent", "chores", "garden"],
+    "words": [
+      { "word": "Water", "meaning": "Tưới nước" },
+      { "word": "the plants,", "meaning": "cây cối," },
+      { "word": "please.", "meaning": "làm ơn." }
+    ]
+  },
+  {
+    "id": "chore_water_plants_act",
+    "en": "I water the plants.",
+    "vi": "Con tưới nước cho cây.",
+    "intent": "housework.water_plants",
+    "tags": ["chores", "garden"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "water", "meaning": "tưới nước" },
+      { "word": "the plants.", "meaning": "những chậu cây." }
+    ]
+  },
+  {
+    "id": "chore_wash_dishes_req",
+    "en": "Wash the dishes.",
+    "vi": "Rửa bát đĩa đi con.",
+    "intent": "housework.wash_dishes",
+    "tags": ["parent", "chores", "kitchen"],
+    "words": [
+      { "word": "Wash", "meaning": "Rửa" },
+      { "word": "the dishes.", "meaning": "bát đĩa." }
+    ]
+  },
+  {
+    "id": "chore_wash_dishes_act",
+    "en": "I wash the dishes.",
+    "vi": "Con rửa bát đĩa.",
+    "intent": "housework.wash_dishes",
+    "tags": ["chores", "kitchen"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "wash", "meaning": "rửa" },
+      { "word": "the dishes.", "meaning": "bát đĩa." }
+    ]
+  },
+  {
+    "id": "set_the_table",
+    "en": "Set the table.",
+    "vi": "Dọn bàn ăn.",
+    "intent": "housework.wash_dishes",
+    "tags": ["chores", "kitchen"],
+    "words": [
+      { "word": "Set", "meaning": "dọn" },
+      { "word": "the table.", "meaning": "bàn ăn." }
+    ]
+  },
+  {
+    "id": "help_set_table",
+    "en": "Help me set the table.",
+    "vi": "Giúp mẹ/bố dọn bàn ăn.",
+    "intent": "housework.wash_dishes",
+    "tags": ["parent", "chores", "kitchen"],
+    "words": [
+      { "word": "Help me", "meaning": "Giúp tôi" },
+      { "word": "set the table.", "meaning": "dọn bàn ăn." }
+    ]
+  },
+  {
+    "id": "chore_put_toys_req",
+    "en": "Put away your toys.",
+    "vi": "Cất đồ chơi đi con.",
+    "intent": "housework.general_chores",
+    "tags": ["parent", "chores", "toys"],
+    "words": [
+      { "word": "Put away", "meaning": "Cất đi" },
+      { "word": "your", "meaning": "của con" },
+      { "word": "toys.", "meaning": "đồ chơi." }
+    ]
+  },
+  {
+    "id": "chore_put_toys_act",
+    "en": "I put away my toys.",
+    "vi": "Con cất đồ chơi gọn gàng.",
+    "intent": "housework.general_chores",
+    "tags": ["chores", "toys"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "put away", "meaning": "cất đi" },
+      { "word": "my", "meaning": "của mình" },
+      { "word": "toys.", "meaning": "đồ chơi." }
+    ]
+  },
+  {
+    "id": "chore_feed_pet_req",
+    "en": "Feed the pet.",
+    "vi": "Cho thú cưng ăn nhé con.",
+    "intent": "housework.general_chores",
+    "tags": ["parent", "chores", "pet"],
+    "words": [
+      { "word": "Feed", "meaning": "Cho ăn" },
+      { "word": "the pet.", "meaning": "thú cưng." }
+    ]
+  },
+  {
+    "id": "chore_feed_pet_act",
+    "en": "I feed the dog.",
+    "vi": "Con cho cún ăn.",
+    "intent": "housework.general_chores",
+    "tags": ["chores", "pet"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "feed", "meaning": "cho ăn" },
+      { "word": "the dog.", "meaning": "chú chó." }
+    ]
+  },
+  {
+    "id": "chore_clean_mess_req",
+    "en": "Clean up this mess.",
+    "vi": "Hãy dọn sạch chỗ lộn xộn này con nhé.",
+    "intent": "housework.general_chores",
+    "tags": ["parent", "chores"],
+    "words": [
+      { "word": "Clean up", "meaning": "Dọn dẹp" },
+      { "word": "this", "meaning": "này" },
+      { "word": "mess.", "meaning": "chỗ hỗn độn/lộn xộn." }
+    ]
+  },
+  {
+    "id": "chore_clean_room_act",
+    "en": "I clean up my room.",
+    "vi": "Con tự dọn phòng gọn gàng.",
+    "intent": "housework.general_chores",
+    "tags": ["chores", "bedroom"],
+    "words": [
+      { "word": "I", "meaning": "Con" },
+      { "word": "clean up", "meaning": "dọn dẹp" },
+      { "word": "my", "meaning": "của mình" },
+      { "word": "room.", "meaning": "phòng." }
+    ]
+  },
+  {
+    "id": "take_out_trash",
+    "en": "Take the trash out.",
+    "vi": "Bỏ rác ra ngoài.",
+    "intent": "housework.general_chores",
+    "tags": ["chores"],
+    "words": [
+      { "word": "Take", "meaning": "lấy" },
+      { "word": "the trash", "meaning": "rác" },
+      { "word": "out.", "meaning": "ra ngoài." }
+    ]
+  },
+  {
+    "id": "wash_laundry",
+    "en": "Wash the laundry.",
+    "vi": "Giặt quần áo.",
+    "intent": "housework.fold_clothes",
+    "tags": ["chores", "clothes"],
+    "words": [
+      { "word": "Wash", "meaning": "giặt" },
+      { "word": "the laundry.", "meaning": "quần áo." }
+    ]
+  },
+  {
+    "id": "can_i_help_cooking",
+    "en": "Can I help with cooking?",
+    "vi": "Con giúp nấu ăn được không ạ?",
+    "intent": "housework.wash_dishes",
+    "tags": ["chores", "kitchen"],
+    "words": [
+      { "word": "Can I help", "meaning": "Con có thể giúp" },
+      { "word": "with cooking?", "meaning": "trong việc nấu ăn không?" }
+    ]
+  },
+  {
+    "id": "time_to_eat",
+    "en": "Time to eat!",
+    "vi": "Đến giờ ăn rồi!",
+    "intent": "daily_routine.dinner",
+    "tags": ["food", "kitchen"],
+    "words": [
+      { "word": "Time to", "meaning": "đến giờ" },
+      { "word": "eat!", "meaning": "ăn!" }
+    ]
+  },
+
+
+
+  {
+    "id": "im_happy",
+    "en": "I'm happy.",
+    "vi": "Con đang vui.",
+    "intent": "emotion.happy",
+    "tags": ["emotion"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "happy.", "meaning": "vui." }
+    ]
+  },
+  {
+    "id": "im_sad",
+    "en": "I'm sad.",
+    "vi": "Con đang buồn.",
+    "intent": "emotion.sad",
+    "tags": ["emotion"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "sad.", "meaning": "buồn." }
+    ]
+  },
+  {
+    "id": "im_excited",
+    "en": "I'm excited!",
+    "vi": "Con đang hào hứng!",
+    "intent": "emotion.excited",
+    "tags": ["emotion"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "excited!", "meaning": "hào hứng!" }
+    ]
+  },
+  {
+    "id": "im_tired",
+    "en": "I'm tired.",
+    "vi": "Con mệt.",
+    "intent": "emotion.physical",
+    "tags": ["emotion"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "tired.", "meaning": "mệt." }
+    ]
+  },
+  {
+    "id": "im_sleepy",
+    "en": "I'm sleepy.",
+    "vi": "Con buồn ngủ.",
+    "intent": "emotion.physical",
+    "tags": ["emotion", "bedroom"],
+    "words": [
+      { "word": "I'm", "meaning": "Mình thì" },
+      { "word": "sleepy.", "meaning": "buồn ngủ." }
+    ]
+  },
+  {
+    "id": "i_love_you",
+    "en": "I love you.",
+    "vi": "Con yêu mẹ/bố.",
+    "intent": "emotion.happy",
+    "tags": ["emotion", "social"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Con" },
+      { "word": "love", "meaning": "yêu" },
+      { "word": "you.", "meaning": "bạn / mẹ / bố." }
+    ]
+  },
+  {
+    "id": "i_feel_sick",
+    "en": "I feel sick.",
+    "vi": "Mình cảm thấy bị bệnh.",
+    "intent": "emotion.sick",
+    "tags": ["emotion", "health"],
+    "words": [
+      { "word": "I feel", "meaning": "Mình cảm thấy" },
+      { "word": "sick.", "meaning": "bị bệnh." }
+    ]
+  },
+  {
+    "id": "i_feel_better",
+    "en": "I feel better now.",
+    "vi": "Mình cảm thấy tốt hơn rồi.",
+    "intent": "emotion.sick",
+    "tags": ["emotion", "health"],
+    "words": [
+      { "word": "I feel", "meaning": "Mình cảm thấy" },
+      { "word": "better now.", "meaning": "tốt hơn rồi." }
+    ]
+  },
+  {
+    "id": "i_have_headache",
+    "en": "I have a headache.",
+    "vi": "Con đau đầu.",
+    "intent": "emotion.sick",
+    "tags": ["health"],
+    "words": [
+      { "word": "I have", "meaning": "Tôi có" },
+      { "word": "a headache.", "meaning": "đau đầu." }
+    ]
+  },
+  {
+    "id": "i_have_fever",
+    "en": "I have a fever.",
+    "vi": "Con sốt.",
+    "intent": "emotion.sick",
+    "tags": ["health"],
+    "words": [
+      { "word": "I have", "meaning": "Tôi có" },
+      { "word": "a fever.", "meaning": "sốt." }
+    ]
+  },
+  {
+    "id": "you_did_great",
+    "en": "You did great!",
+    "vi": "Bạn làm rất tốt!",
+    "intent": "emotion.happy",
+    "tags": ["encouragement", "social"],
+    "words": [
+      { "word": "You did great!", "meaning": "Bạn làm rất tốt!" }
+    ]
+  },
+  {
+    "id": "im_proud_of_you",
+    "en": "I'm proud of you.",
+    "vi": "Mình tự hào về bạn.",
+    "intent": "emotion.happy",
+    "tags": ["encouragement", "social"],
+    "words": [
+      { "word": "I'm proud of", "meaning": "Tôi tự hào về" },
+      { "word": "you.", "meaning": "bạn." }
+    ]
+  },
+
+
+
+  {
+    "id": "i_like_drawing",
+    "en": "I like drawing.",
+    "vi": "Tôi thích vẽ.",
+    "intent": "social.preference",
+    "tags": ["social", "preference"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "like", "meaning": "thích" },
+      { "word": "drawing.", "meaning": "vẽ." }
+    ]
+  },
+  {
+    "id": "i_like_music",
+    "en": "I like music.",
+    "vi": "Tôi thích âm nhạc.",
+    "intent": "social.preference",
+    "tags": ["social", "preference"],
+    "words": [
+      { "word": "I", "meaning": "Tôi / Mình" },
+      { "word": "like", "meaning": "thích" },
+      { "word": "music.", "meaning": "âm nhạc." }
+    ]
+  },
+  {
+    "id": "my_favorite_color",
+    "en": "My favorite color is blue.",
+    "vi": "Màu yêu thích của mình là màu xanh dương.",
+    "intent": "social.preference",
+    "tags": ["social", "preference"],
+    "words": [
+      { "word": "My", "meaning": "Của mình" },
+      { "word": "favorite color", "meaning": "màu yêu thích" },
+      { "word": "is blue.", "meaning": "là màu xanh dương." }
+    ]
+  },
+  {
+    "id": "i_want_to_play_outside",
+    "en": "I want to play outside.",
+    "vi": "Mình muốn ra ngoài chơi.",
+    "intent": "daily_routine.play",
+    "tags": ["social", "preference"],
+    "words": [
+      { "word": "I want", "meaning": "Mình muốn" },
+      { "word": "to play outside.", "meaning": "ra ngoài chơi." }
+    ]
+  },
+
+
+
+  {
+    "id": "look_at_sky",
+    "en": "Look at the sky!",
+    "vi": "Nhìn lên bầu trời!",
+    "intent": "social.observation",
+    "tags": ["outdoor", "nature"],
+    "words": [
+      { "word": "Look at", "meaning": "nhìn vào" },
+      { "word": "the sky!", "meaning": "bầu trời!" }
+    ]
+  },
+  {
+    "id": "look_at_sun",
+    "en": "Look at the sun!",
+    "vi": "Nhìn mặt trời!",
+    "intent": "social.observation",
+    "tags": ["outdoor", "nature"],
+    "words": [
+      { "word": "Look at", "meaning": "nhìn vào" },
+      { "word": "the sun!", "meaning": "mặt trời!" }
+    ]
+  },
+  {
+    "id": "hold_my_hand",
+    "en": "Hold my hand!",
+    "vi": "Cầm chặt tay mình!",
+    "intent": "safety.warning",
+    "tags": ["safety", "outdoor"],
+    "words": [
+      { "word": "Hold", "meaning": "giữ chặt" },
+      { "word": "my hand!", "meaning": "tay của mình!" }
+    ]
+  },
+  {
+    "id": "be_careful",
+    "en": "Be careful!",
+    "vi": "Cẩn thận!",
+    "intent": "safety.warning",
+    "tags": ["safety"],
+    "words": [
+      { "word": "Be careful!", "meaning": "Cẩn thận!" }
+    ]
+  },
+  {
+    "id": "dont_run_near_road",
+    "en": "Don't run near the road!",
+    "vi": "Đừng chạy gần đường!",
+    "intent": "safety.warning",
+    "tags": ["safety", "outdoor"],
+    "words": [
+      { "word": "Don't run", "meaning": "đừng chạy" },
+      { "word": "near the road!", "meaning": "gần đường!" }
+    ]
+  },
+  {
+    "id": "stay_close_to_me",
+    "en": "Stay close to me!",
+    "vi": "Ở gần mình một chút!",
+    "intent": "safety.warning",
+    "tags": ["safety", "outdoor"],
+    "words": [
+      { "word": "Stay close", "meaning": "ở gần" },
+      { "word": "to me!", "meaning": "mình!" }
+    ]
+  },
+
+
+
+  {
+    "id": "i_want_bedtime_story",
+    "en": "I want to read a bedtime story.",
+    "vi": "Con muốn đọc truyện trước khi ngủ ạ.",
+    "intent": "daily_routine.sleep",
+    "tags": ["bedroom", "night"],
+    "words": [
+      { "word": "I want", "meaning": "Mình muốn" },
+      { "word": "to read", "meaning": "đọc" },
+      { "word": "a bedtime story.", "meaning": "một câu chuyện trước khi ngủ." }
+    ]
+  },
+  {
+    "id": "turn_off_light",
+    "en": "Turn off the light.",
+    "vi": "Tắt đèn đi.",
+    "intent": "daily_routine.sleep",
+    "tags": ["bedroom", "night"],
+    "words": [
+      { "word": "Turn off", "meaning": "tắt" },
+      { "word": "the light.", "meaning": "đèn." }
+    ]
+  },
+
+
+
+  {
+    "id": "my_name_is",
+    "en": "My name is Anna. What's your name?",
+    "vi": "Mình tên là Anna. Bạn tên gì?",
+    "intent": "social.introduction",
+    "tags": ["social", "greeting"],
+    "words": [
+      { "word": "My name is", "meaning": "Tên mình là" },
+      { "word": "Anna.", "meaning": "Anna." },
+      { "word": "What's your name?", "meaning": "Bạn tên gì?" }
+    ]
+  },
+  {
+    "id": "this_is_my_mom",
+    "en": "This is my Mom.",
+    "vi": "Đây là mẹ con.",
+    "intent": "social.introduction",
+    "tags": ["social"],
+    "words": [
+      { "word": "This is", "meaning": "Đây là" },
+      { "word": "my Mom.", "meaning": "mẹ của mình." }
+    ]
+  }
+]

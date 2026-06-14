@@ -1,0 +1,186 @@
+{
+  "wake_up": {
+    "name": "Morning Wake Up",
+    "order": 1,
+    "background": "bedroom_morning",
+    "reviewWeight": 5,
+    "intents": [
+      "daily_routine.wake_up",
+      "daily_routine.check_time",
+      "social.greeting.morning"
+    ]
+  },
+  "bathroom": {
+    "name": "Bathroom Routine",
+    "order": 2,
+    "background": "bathroom",
+    "reviewWeight": 5,
+    "intents": [
+      "daily_routine.brush_teeth",
+      "daily_routine.wash_face"
+    ]
+  },
+  "get_dressed": {
+    "name": "Getting Ready",
+    "order": 3,
+    "background": "bedroom",
+    "reviewWeight": 3,
+    "intents": [
+      "daily_routine.get_dressed"
+    ]
+  },
+  "breakfast": {
+    "name": "Breakfast Table",
+    "order": 4,
+    "background": "kitchen",
+    "reviewWeight": 5,
+    "intents": [
+      "social.greeting.morning",
+      "request.ask_food",
+      "daily_routine.breakfast",
+      "social.thank_you",
+      "social.politeness",
+      "emotion.physical"
+    ]
+  },
+  "go_to_school": {
+    "name": "Going to School",
+    "order": 5,
+    "background": "street_morning",
+    "reviewWeight": 3,
+    "intents": [
+      "daily_routine.go_school",
+      "daily_routine.check_time",
+      "social.greeting.general",
+      "safety.warning",
+      "emotion.excited"
+    ]
+  },
+  "classroom": {
+    "name": "Classroom Activity",
+    "order": 6,
+    "background": "classroom",
+    "reviewWeight": 5,
+    "intents": [
+      "classroom.reading",
+      "classroom.math",
+      "classroom.art",
+      "classroom.music",
+      "classroom.pe",
+      "classroom.general",
+      "social.introduction"
+    ]
+  },
+  "go_home": {
+    "name": "Going Home",
+    "order": 7,
+    "background": "street_afternoon",
+    "reviewWeight": 2,
+    "intents": [
+      "daily_routine.go_home",
+      "social.observation",
+      "daily_routine.play"
+    ]
+  },
+  "house_chores": {
+    "name": "Helping Around House",
+    "order": 8,
+    "background": "living_room",
+    "reviewWeight": 5,
+    "intents": [
+      "housework.sweep",
+      "housework.water_plants",
+      "housework.fold_clothes",
+      "housework.wash_dishes",
+      "housework.general_chores",
+      "housework.general",
+      "request.ask_help"
+    ]
+  },
+  "dinner": {
+    "name": "Dinner Time",
+    "order": 9,
+    "background": "dining_room",
+    "reviewWeight": 3,
+    "intents": [
+      "daily_routine.dinner",
+      "request.ask_food",
+      "social.politeness",
+      "emotion.happy",
+      "emotion.physical"
+    ]
+  },
+  "bedtime": {
+    "name": "Bedtime Coziness",
+    "order": 10,
+    "background": "bedroom_night",
+    "reviewWeight": 5,
+    "intents": [
+      "daily_routine.sleep",
+      "social.farewell",
+      "emotion.physical",
+      "emotion.sick"
+    ]
+  },
+  "weekend_wake_up": {
+    "name": "Weekend Late Rise",
+    "order": 1,
+    "background": "bedroom_morning",
+    "reviewWeight": 3,
+    "intents": [
+      "daily_routine.wake_up",
+      "daily_routine.check_time"
+    ]
+  },
+  "weekend_breakfast": {
+    "name": "Weekend Breakfast Pancake Choice",
+    "order": 2,
+    "background": "kitchen",
+    "reviewWeight": 3,
+    "intents": [
+      "social.greeting.morning",
+      "request.ask_food"
+    ]
+  },
+  "weekend_destination": {
+    "name": "Choosing Place to Go",
+    "order": 3,
+    "background": "street_morning",
+    "reviewWeight": 2,
+    "intents": [
+      "social.greeting.general",
+      "social.observation"
+    ]
+  },
+  "weekend_adventure": {
+    "name": "Fun Weekend Activity Details",
+    "order": 4,
+    "background": "park",
+    "reviewWeight": 5,
+    "intents": [
+      "emotion.excited",
+      "classroom.pe",
+      "social.observation"
+    ]
+  },
+  "weekend_treat": {
+    "name": "Sweet Ice Cream Choice",
+    "order": 5,
+    "background": "park",
+    "reviewWeight": 3,
+    "intents": [
+      "request.ask_food",
+      "emotion.happy"
+    ]
+  },
+  "weekend_bedtime": {
+    "name": "Weekend Sleepy Night",
+    "order": 6,
+    "background": "bedroom_night",
+    "reviewWeight": 3,
+    "intents": [
+      "daily_routine.sleep",
+      "social.farewell"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "weekday": [
+    "wake_up",
+    "bathroom",
+    "get_dressed",
+    "breakfast",
+    "go_to_school",
+    "classroom",
+    "go_home",
+    "house_chores",
+    "dinner",
+    "bedtime"
+  ],
+  "saturday": [
+    "weekend_wake_up",
+    "bathroom",
+    "weekend_breakfast",
+    "weekend_destination",
+    "weekend_adventure",
+    "weekend_treat",
+    "dinner",
+    "weekend_bedtime"
+  ],
+  "sunday": [
+    "weekend_wake_up",
+    "bathroom",
+    "weekend_breakfast",
+    "house_chores",
+    "weekend_destination",
+    "weekend_adventure",
+    "dinner",
+    "weekend_bedtime"
+  ]
+}

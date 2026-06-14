@@ -1,0 +1,5 @@
+{
+  "name": "My English Week",
+  "description": "An interactive daily storybook for kids aged 4-8 to speak English naturally by living daily routine adventures.",
+  "requestFramePermissions": ["microphone"]
+}
