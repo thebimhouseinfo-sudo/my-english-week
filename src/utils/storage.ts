@@ -1,0 +1,159 @@
+import { UserStats } from '../types';
+
+// Simple cookie get/set helpers
+function setCookie(name: string, value: string, days = 365) {
+  try {
+    const d = new Date();
+    d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+    const expires = 'expires=' + d.toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/;SameSite=Strict`;
+  } catch (e) {
+    console.error('Cookie set error:', e);
+  }
+}
+
+function getCookie(name: string): string | null {
+  try {
+    const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+  } catch (e) {
+    console.error('Cookie get error:', e);
+  }
+  return null;
+}
+
+// Simple IndexedDB wrapper
+const DB_NAME = 'my_english_week_db';
+const STORE_NAME = 'stats_store';
+const KEY = 'user_stats';
+
+function openDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function saveToIndexedDB(stats: UserStats): Promise<void> {
+  try {
+    const db = await openDB();
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    store.put(stats, KEY);
+    return new Promise((resolve, reject) => {
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (e) {
+    console.warn('IndexedDB save failed:', e);
+  }
+}
+
+async function loadFromIndexedDB(): Promise<UserStats | null> {
+  try {
+    const db = await openDB();
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.get(KEY);
+    return new Promise((resolve, reject) => {
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (e) {
+    console.warn('IndexedDB load failed:', e);
+    return null;
+  }
+}
+
+/**
+ * Saves stats to localStorage, Cookies, and IndexedDB.
+ */
+export async function persistStats(stats: UserStats): Promise<void> {
+  const jsonStr = JSON.stringify(stats);
+  
+  // 1. LocalStorage
+  try {
+    localStorage.setItem('my_english_week_stats_v3', jsonStr);
+  } catch (e) {
+    console.warn('LocalStorage write failed:', e);
+  }
+
+  // 2. Cookie
+  setCookie('my_english_week_stats_v3', jsonStr);
+
+  // 3. IndexedDB
+  await saveToIndexedDB(stats);
+}
+
+/**
+ * Loads stats using all three sources (localStorage, Cookies, and IndexedDB)
+ * to ensure maximum reliability and recovery on iOS Safari.
+ */
+export async function retrieveStats(defaultStats: UserStats): Promise<UserStats> {
+  let loadedStr: string | null = null;
+
+  // 1. Try LocalStorage
+  try {
+    loadedStr = localStorage.getItem('my_english_week_stats_v3');
+  } catch (e) {
+    console.warn('LocalStorage read failed:', e);
+  }
+
+  // 2. Try Cookie
+  if (!loadedStr) {
+    loadedStr = getCookie('my_english_week_stats_v3');
+  }
+
+  if (loadedStr) {
+    try {
+      const parsed = JSON.parse(loadedStr);
+      // Asynchronously restore IndexedDB if it was empty
+      saveToIndexedDB(parsed).catch(console.error);
+      return parsed;
+    } catch (e) {
+      console.error('Failed to parse stats string:', e);
+    }
+  }
+
+  // 3. Try IndexedDB
+  const idbStats = await loadFromIndexedDB();
+  if (idbStats) {
+    // Restore LocalStorage and Cookie
+    try {
+      localStorage.setItem('my_english_week_stats_v3', JSON.stringify(idbStats));
+    } catch (e) {}
+    setCookie('my_english_week_stats_v3', JSON.stringify(idbStats));
+    return idbStats;
+  }
+
+  return defaultStats;
+}
+
+/**
+ * Completely clears stats from all three sources.
+ */
+export async function clearAllStats(): Promise<void> {
+  try {
+    localStorage.removeItem('my_english_week_stats_v3');
+  } catch (e) {}
+  
+  setCookie('my_english_week_stats_v3', '', -1);
+
+  try {
+    const db = await openDB();
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).delete(KEY);
+  } catch (e) {}
+}

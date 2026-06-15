@@ -167,16 +167,20 @@ export default function DailyReview({
       sounds.playTwinkle();
       updateDayState(prev => {
         const newQA = [...prev.questionsAnswers];
+        const prevStars = newQA[index].stars || 0;
+        const newStars = Math.min(5, prevStars + score);
         newQA[index] = {
           ...newQA[index],
           recordingState: 'completed',
           transcript,
-          stars: score
+          stars: newStars
         };
         return { ...prev, questionsAnswers: newQA };
       });
       
-      if (score >= 3) {
+      const prevStars = dayState.questionsAnswers[index].stars || 0;
+      const newStars = Math.min(5, prevStars + score);
+      if (newStars >= 3) {
         setTimeout(() => {
           setActiveQuestionIndex(curr => (curr === index && curr < 4) ? curr + 1 : curr);
         }, 1500);
@@ -195,16 +199,20 @@ export default function DailyReview({
       sounds.playTwinkle();
       updateDayState(prev => {
         const newTimeline = [...prev.timelineSentences];
+        const prevStars = newTimeline[index].stars || 0;
+        const newStars = Math.min(5, prevStars + score);
         newTimeline[index] = {
           ...newTimeline[index],
           recordingState: 'completed',
           transcript,
-          stars: score
+          stars: newStars
         };
         return { ...prev, timelineSentences: newTimeline };
       });
       
-      if (score >= 3) {
+      const prevStars = dayState.timelineSentences[index].stars || 0;
+      const newStars = Math.min(5, prevStars + score);
+      if (newStars >= 3) {
         setTimeout(() => {
           setActiveTimelineIndex(curr => (curr === index && curr < 4) ? curr + 1 : curr);
         }, 1500);

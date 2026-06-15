@@ -252,9 +252,11 @@ export default function SceneRenderer({
       setCompletedLines(prev => {
         const prevRecord = prev[lineId] || { stars: 0, transcript: '', practicePoints: 0, conquered: false };
         const prevPoints = prevRecord.practicePoints || 0;
+        const prevStars = prevRecord.stars || 0;
 
         const addedPoints = score;
         const newPoints = prevPoints + addedPoints;
+        const newStars = Math.min(5, prevStars + score);
         const conquered = (score >= 4) || (newPoints >= 5);
 
         if (conquered) {
@@ -262,8 +264,15 @@ export default function SceneRenderer({
             setActiveLineIndex(prevIdx => {
               // Only auto advance if we are currently on this line
               const thisLineIndex = lines.findIndex(l => l.id === lineId);
-              if (prevIdx === thisLineIndex && prevIdx < lines.length - 1) {
-                return prevIdx + 1;
+              if (prevIdx === thisLineIndex) {
+                if (prevIdx < lines.length - 1) {
+                  return prevIdx + 1;
+                } else {
+                  // Last line of the scene: automatically complete the scene
+                  setTimeout(() => {
+                    onSceneComplete();
+                  }, 0);
+                }
               }
               return prevIdx;
             });
@@ -273,7 +282,7 @@ export default function SceneRenderer({
         return {
           ...prev,
           [lineId]: {
-            stars: score,
+            stars: newStars,
             transcript,
             practicePoints: newPoints,
             conquered
@@ -576,16 +585,20 @@ export default function SceneRenderer({
                 )}
 
                 {/* Next Button placed strictly below the Feedback card */}
-                <div className="mt-3 w-full">
+                <div className="mt-3 w-full flex flex-col gap-2">
                   {isLineConquered(currentLine.id) && activeLineIndex < lines.length - 1 ? (
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => {
                         sounds.playClick();
-                        setActiveLineIndex(prev => prev + 1);
+                        const nextIdx = activeLineIndex + 1;
+                        setActiveLineIndex(nextIdx);
+                        if (lines[nextIdx] && !lines[nextIdx].isChoice) {
+                          speech.speak(lines[nextIdx].text);
+                        }
                       }}
-                      className="flex items-center justify-center gap-1.5 px-6 py-3 w-full rounded-2xl font-black bg-[#FFE57F] hover:bg-[#FFD54F] text-amber-950 border-2 border-amber-400 cursor-pointer shadow-md text-sm transition-all"
+                      className="flex items-center justify-center gap-1.5 px-6 py-3 w-full rounded-2xl font-black bg-[#FFE57F] hover:bg-[#FFD54F] text-amber-955 border-2 border-amber-400 cursor-pointer shadow-md text-sm transition-all"
                       id="next-line-step-btn"
                     >
                       <span className="font-vietnamese">Nghe câu tiếp</span>
@@ -605,7 +618,38 @@ export default function SceneRenderer({
                       <CheckCircle2 className="h-4 w-4" />
                       <span className="font-vietnamese font-bold">Qua đoạn mới 👉</span>
                     </motion.button>
-                  ) : null}
+                  ) : (
+                    <button
+                      onClick={() => {
+                        sounds.playTwinkle();
+                        setCompletedLines(prev => ({
+                          ...prev,
+                          [currentLine.id]: {
+                            stars: 4,
+                            transcript: currentLine.text,
+                            practicePoints: 5,
+                            conquered: true
+                          }
+                        }));
+                        if (activeLineIndex < lines.length - 1) {
+                          const nextIdx = activeLineIndex + 1;
+                          setTimeout(() => {
+                            setActiveLineIndex(nextIdx);
+                            if (lines[nextIdx] && !lines[nextIdx].isChoice) {
+                              speech.speak(lines[nextIdx].text);
+                            }
+                          }, 1000);
+                        } else {
+                          setTimeout(() => {
+                            onSceneComplete();
+                          }, 1000);
+                        }
+                      }}
+                      className="text-xs font-black text-slate-500 hover:text-slate-800 bg-white border-2 border-slate-200 px-4 py-2.5 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors font-vietnamese w-full"
+                    >
+                      Bỏ qua câu này (Con chưa nói được) ➜
+                    </button>
+                  )}
                 </div>
               </motion.div>
             )}

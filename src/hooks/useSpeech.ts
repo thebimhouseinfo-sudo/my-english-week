@@ -130,6 +130,7 @@ export function useSpeech(): SpeechEngine {
     const audio = new Audio();
     audio.preload = 'auto';
     audio.src = url;
+    audio.volume = 1.0;
     audioRef.current = audio;
 
     let isDone = false;
@@ -182,6 +183,7 @@ export function useSpeech(): SpeechEngine {
       utterance.voice = getBestEnglishVoice();
       utterance.rate = 0.9; // Slightly slower for kids
       utterance.pitch = 1.15; // Slightly higher pitch for kids friendliness
+      utterance.volume = 1.0; // Explicitly set full volume
 
       utterance.onend = () => {
         setSpeaking(false);
@@ -293,11 +295,16 @@ export function useSpeech(): SpeechEngine {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       console.warn('Speech recognition not supported in this browser.');
+      setTimeout(() => {
+        onResult('', 0);
+      }, 100);
       return;
     }
     
     if (recognitionRef.current) {
-      recognitionRef.current.abort();
+      try {
+        recognitionRef.current.abort();
+      } catch (e) {}
     }
     
     const rec = new SpeechRecognition();
@@ -314,7 +321,9 @@ export function useSpeech(): SpeechEngine {
       const score = calculateScore(expectedText, transcript);
       
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {}
       }
       setIsListening(false);
       
@@ -323,25 +332,30 @@ export function useSpeech(): SpeechEngine {
         attemptsRef.current[sentenceId] = 0;
       }
       
-      onResult(transcript, score);
+      // Safety delay to allow iOS Safari to switch audio category back to playback
+      setTimeout(() => {
+        onResult(transcript, score);
+      }, 350);
     };
     
     rec.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error);
       if (recognitionRef.current) {
-        recognitionRef.current.abort();
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {}
       }
       setIsListening(false);
       
       // If error and attempts are high, trigger auto pass
-      if (attemptsRef.current[sentenceId] >= 4) {
-        attemptsRef.current[sentenceId] = 0;
-        // Auto pass: return empty transcript but 4 stars to let kids move on instantly
-        onResult('', 4);
-      } else {
-        // Fallback: trigger scorecard display with 0 stars for retry
-        onResult('', 0);
-      }
+      setTimeout(() => {
+        if (attemptsRef.current[sentenceId] >= 4) {
+          attemptsRef.current[sentenceId] = 0;
+          onResult('', 4);
+        } else {
+          onResult('', 0);
+        }
+      }, 350);
     };
     
     rec.onend = () => {
@@ -349,7 +363,15 @@ export function useSpeech(): SpeechEngine {
     };
     
     recognitionRef.current = rec;
-    rec.start();
+    try {
+      rec.start();
+    } catch (e) {
+      console.error('Failed to start speech recognition:', e);
+      setIsListening(false);
+      setTimeout(() => {
+        onResult('', 0);
+      }, 100);
+    }
   };
 
   const stopListening = () => {

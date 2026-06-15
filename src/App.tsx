@@ -26,6 +26,7 @@ import { useSpeech } from './hooks/useSpeech';
 import { sounds } from './utils/soundEngine';
 import CuteIcon from './components/CuteIcon';
 import { getStorySkeletonForDay } from './data/phrases/phraseEngine';
+import { persistStats, retrieveStats, clearAllStats } from './utils/storage';
 
 // Cozy home character display vectors
 import { GrandmaVector, BedroomVector, SchoolVector, ParkVector } from './components/KidsVectors';
@@ -113,6 +114,15 @@ export default function App() {
   const [selectedDayOnHome, setSelectedDayOnHome] = useState<DayName>('Monday');
   const [tempName, setTempName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('🦊');
+  const [showiOSBanner, setShowiOSBanner] = useState(false);
+
+  useEffect(() => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+    if (isIOS && !isStandalone) {
+      setShowiOSBanner(true);
+    }
+  }, []);
 
   // Parent control states
   const [isParentModalOpen, setIsParentModalOpen] = useState(false);
@@ -147,17 +157,9 @@ export default function App() {
 
   // Load parent/kid stats on mount
   useEffect(() => {
-    const savedStats = localStorage.getItem('my_english_week_stats_v3');
-    if (savedStats) {
-      try {
-        const parsed = JSON.parse(savedStats);
-        setStats(parsed);
-      } catch (e) {
-        setStats(DEFAULT_STATS);
-      }
-    } else {
-      setStats(DEFAULT_STATS);
-    }
+    retrieveStats(DEFAULT_STATS).then(loadedStats => {
+      setStats(loadedStats);
+    });
   }, []);
 
   // Sync selected day on homepage recommendation to map to actual current day on device
@@ -180,7 +182,7 @@ export default function App() {
   // Persist kid stats
   const saveStats = (newStats: UserStats) => {
     setStats(newStats);
-    localStorage.setItem('my_english_week_stats_v3', JSON.stringify(newStats));
+    persistStats(newStats).catch(console.error);
   };
 
   // Register and persist speech telemetry events in real-time
@@ -238,7 +240,7 @@ export default function App() {
         avatar: nextComp.emoji
       };
 
-      localStorage.setItem('my_english_week_stats_v3', JSON.stringify(updated));
+      persistStats(updated).catch(console.error);
       return updated;
     });
   };
@@ -341,14 +343,14 @@ export default function App() {
   // Reset entire score/streak to replay a brand new week!
   const handleResetProgress = () => {
     sounds.playClick();
-    localStorage.removeItem('my_english_week_stats_v3');
-    saveStats(DEFAULT_STATS);
-    setTempName('');
-    setNavState('welcome');
-    setSelectedDay(null);
-    setIsParentModalOpen(false);
-    setParentModeUnlocked(false);
-    // Removed progress cleared greeting voice output
+    clearAllStats().then(() => {
+      setStats(DEFAULT_STATS);
+      setTempName('');
+      setNavState('welcome');
+      setSelectedDay(null);
+      setIsParentModalOpen(false);
+      setParentModeUnlocked(false);
+    });
   };
 
   const isWeekend = selectedDay === 'Saturday' || selectedDay === 'Sunday';
@@ -412,6 +414,12 @@ export default function App() {
               <Flame className="h-5 w-5 fill-rose-500 stroke-transparent animate-pulse" />
               <span className="text-xs sm:text-sm font-vietnamese font-black text-rose-700">{stats.currentStreak} Ngày</span>
             </div>
+            
+            {/* Total Stars Badge in Header */}
+            <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-2xl border-4 border-amber-200 bento-shadow" id="stars-total-badge">
+              <Star className="h-5 w-5 fill-amber-400 stroke-transparent animate-pulse" />
+              <span className="text-xs sm:text-sm font-vietnamese font-black text-amber-700">{stats.totalStars} Sao</span>
+            </div>
 
             {/* Parent Settings Cog */}
             <button
@@ -426,6 +434,27 @@ export default function App() {
         </div>
       </header>
  
+      {/* iOS Safari banner */}
+      {showiOSBanner && (
+        <div className="max-w-5xl mx-auto px-4 mt-4" id="ios-safari-banner">
+          <div className="bg-amber-50 border-4 border-amber-200 rounded-[2rem] p-4.5 flex items-start gap-3 shadow-xs relative">
+            <span className="text-2xl shrink-0 mt-0.5">💡</span>
+            <div className="flex flex-col gap-1 text-xs sm:text-sm text-amber-900 font-vietnamese">
+              <span className="font-black text-amber-955">Mẹo học hay trên iPhone / iPad:</span>
+              <p className="font-medium opacity-90 leading-relaxed">
+                Để không bị mất tiến trình học và không cần cấp quyền micro mỗi lần vào lại, bố mẹ hãy nhấn nút <strong className="font-bold text-amber-950">Chia sẻ (Share) 📤</strong> trên Safari &rarr; chọn <strong className="font-bold text-amber-955">"Thêm vào MH chính" (Add to Home Screen)</strong> nhé!
+              </p>
+            </div>
+            <button
+              onClick={() => setShowiOSBanner(false)}
+              className="absolute top-2.5 right-4 text-amber-500 hover:text-amber-750 font-bold text-sm cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* RENDER DYNAMIC NAVIGATION SCREENS */}
       <main className="max-w-5xl mx-auto px-4 mt-8" id="main-root">
         <AnimatePresence mode="wait">
