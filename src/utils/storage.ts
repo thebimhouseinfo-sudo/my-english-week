@@ -202,9 +202,86 @@ export async function retrieveStats(defaultStats: UserStats): Promise<UserStats>
 }
 
 /**
- * Completely clears stats from all sources.
+ * ====== ĐỒNG BỘ TIẾN TRÌNH QUA MÃ (CROSS-DEVICE SYNC CODE) ======
+ * Cho phép phụ huynh tạo một "mã đồng bộ" chứa toàn bộ tiến trình học của bé,
+ * rồi nhập mã đó trên máy/thiết bị khác để bé học tiếp không bị mất dữ liệu.
+ * Mã được mã hóa Base64 từ JSON, có thêm tiền tố phiên bản và checksum đơn giản
+ * để phát hiện mã bị nhập sai/lỗi.
  */
-export async function clearAllStats(): Promise<void> {
+
+const SYNC_CODE_PREFIX = 'MEW1-'; // "My English Week" version 1
+
+// Simple checksum: sum of char codes mod 9999, padded to 4 digits
+function computeChecksum(str: string): string {
+  let sum = 0;
+  for (let i = 0; i < str.length; i++) {
+    sum = (sum + str.charCodeAt(i) * (i + 1)) % 9999;
+  }
+  return sum.toString().padStart(4, '0');
+}
+
+// UTF-8 safe base64 encode/decode (handles Vietnamese characters)
+function utf8ToBase64(str: string): string {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+function base64ToUtf8(str: string): string {
+  return decodeURIComponent(escape(atob(str)));
+}
+
+/**
+ * Tạo mã đồng bộ từ toàn bộ tiến trình học của bé (UserStats).
+ * Trả về chuỗi dạng "MEW1-<checksum>-<base64data>" để phụ huynh copy/chia sẻ.
+ */
+export function generateSyncCode(stats: UserStats): string {
+  const jsonStr = JSON.stringify(stats);
+  const encoded = utf8ToBase64(jsonStr);
+  const checksum = computeChecksum(encoded);
+  return `${SYNC_CODE_PREFIX}${checksum}-${encoded}`;
+}
+
+/**
+ * Giải mã một mã đồng bộ trở lại UserStats.
+ * Trả về null nếu mã không hợp lệ (sai định dạng hoặc checksum không khớp).
+ */
+export function parseSyncCode(code: string): UserStats | null {
+  try {
+    const trimmed = code.trim();
+    if (!trimmed.startsWith(SYNC_CODE_PREFIX)) return null;
+
+    const rest = trimmed.slice(SYNC_CODE_PREFIX.length);
+    const separatorIndex = rest.indexOf('-');
+    if (separatorIndex === -1) return null;
+
+    const checksum = rest.slice(0, separatorIndex);
+    const encoded = rest.slice(separatorIndex + 1);
+
+    if (computeChecksum(encoded) !== checksum) return null;
+
+    const jsonStr = base64ToUtf8(encoded);
+    const parsed = JSON.parse(jsonStr);
+
+    // Basic shape validation
+    if (typeof parsed !== 'object' || parsed === null) return null;
+
+    return parsed as UserStats;
+  } catch (e) {
+    console.error('Lỗi giải mã sync code:', e);
+    return null;
+  }
+}
+
+/**
+ * Áp dụng tiến trình từ mã đồng bộ: lưu vào tất cả các nguồn lưu trữ (localStorage,
+ * cookie, IndexedDB, Blogger) giống persistStats, để máy mới tiếp tục học đúng tiến trình.
+ */
+export async function applySyncCode(code: string): Promise<UserStats | null> {
+  const stats = parseSyncCode(code);
+  if (!stats) return null;
+  await persistStats(stats);
+  return stats;
+}
+
   try {
     localStorage.removeItem('my_english_week_stats_v3');
   } catch (e) {}

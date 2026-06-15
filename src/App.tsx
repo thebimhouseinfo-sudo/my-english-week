@@ -15,7 +15,11 @@ import {
   Check, 
   BookMarked,
   Settings,
-  Lock
+  Lock,
+  Copy,
+  ClipboardPaste,
+  Share2,
+  Home
 } from 'lucide-react';
 
 import { DayName, DayProgression, UserStats } from './types';
@@ -26,7 +30,8 @@ import { useSpeech } from './hooks/useSpeech';
 import { sounds } from './utils/soundEngine';
 import CuteIcon from './components/CuteIcon';
 import { getStorySkeletonForDay } from './data/phrases/phraseEngine';
-import { persistStats, retrieveStats, clearAllStats } from './utils/storage';
+import { persistStats, retrieveStats, clearAllStats, generateSyncCode, applySyncCode } from './utils/storage';
+import { HOME_URL } from './config/appConfig';
 
 // Cozy home character display vectors
 import { GrandmaVector, BedroomVector, SchoolVector, ParkVector } from './components/KidsVectors';
@@ -154,6 +159,13 @@ export default function App() {
   const [mathAnswer, setMathAnswer] = useState('');
   const [mathError, setMathError] = useState(false);
   const [parentModeUnlocked, setParentModeUnlocked] = useState(false);
+
+  // Sync code (đồng bộ tiến trình qua thiết bị khác) states
+  const [syncMode, setSyncMode] = useState<'none' | 'export' | 'import'>('none');
+  const [generatedSyncCode, setGeneratedSyncCode] = useState('');
+  const [syncCodeCopied, setSyncCodeCopied] = useState(false);
+  const [importSyncCodeInput, setImportSyncCodeInput] = useState('');
+  const [importSyncStatus, setImportSyncStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const openParentModal = () => {
     sounds.playClick();
@@ -403,6 +415,49 @@ export default function App() {
     });
   };
 
+  // Tạo mã đồng bộ chứa toàn bộ tiến trình của bé để chuyển sang máy khác
+  const handleGenerateSyncCode = () => {
+    sounds.playClick();
+    const code = generateSyncCode(stats);
+    setGeneratedSyncCode(code);
+    setSyncCodeCopied(false);
+    setSyncMode('export');
+  };
+
+  // Copy mã đồng bộ vào clipboard
+  const handleCopySyncCode = async () => {
+    sounds.playClick();
+    try {
+      await navigator.clipboard.writeText(generatedSyncCode);
+      setSyncCodeCopied(true);
+      setTimeout(() => setSyncCodeCopied(false), 2500);
+    } catch (e) {
+      console.error('Copy failed:', e);
+    }
+  };
+
+  // Áp dụng mã đồng bộ được nhập vào, khôi phục tiến trình từ máy khác
+  const handleApplySyncCode = async () => {
+    sounds.playClick();
+    const result = await applySyncCode(importSyncCodeInput);
+    if (result) {
+      setStats(result);
+      setImportSyncStatus('success');
+      sounds.playSuccess();
+    } else {
+      setImportSyncStatus('error');
+    }
+  };
+
+  // Reset trạng thái UI đồng bộ khi đóng góc phụ huynh
+  const resetSyncState = () => {
+    setSyncMode('none');
+    setGeneratedSyncCode('');
+    setSyncCodeCopied(false);
+    setImportSyncCodeInput('');
+    setImportSyncStatus('idle');
+  };
+
   const isWeekend = selectedDay === 'Saturday' || selectedDay === 'Sunday';
   
   let totalActiveScenes = 10;
@@ -432,25 +487,40 @@ export default function App() {
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-300/10 rounded-full blur-3xl -z-10" />
 
       {/* Main navigation Header */}
-      <header className="bg-white border-b-4 border-amber-100 shadow-xs sticky top-0 z-45" id="global-header">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <button 
-            onClick={() => {
-              sounds.playClick();
-              setNavState('welcome');
-              setSelectedDay(null);
-            }} 
-            className="flex items-center gap-2 cursor-pointer transition-transform hover:scale-105"
-            id="brand-logo-btn"
-          >
-            <div className="px-5 py-2.5 bg-[#FF9800] text-white rounded-full font-black shadow-md transform -rotate-1 flex items-center gap-1.5 hover:rotate-0 transition-transform">
-              <CuteIcon nameOrEmoji="☀️" className="h-6 w-6" />
-              <span className="text-lg font-black tracking-tight leading-none font-fredoka">English Adventure</span>
-            </div>
-          </button>
+      <header className="bg-white/90 backdrop-blur-sm border-b-4 border-amber-100 shadow-xs sticky top-0 z-45" id="global-header">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+          {/* Left group: Home button + Brand logo */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <a
+              href={HOME_URL}
+              target="_top"
+              rel="noopener noreferrer"
+              onClick={() => sounds.playClick()}
+              className="flex items-center justify-center h-11 w-11 sm:h-12 sm:w-12 bg-white text-slate-500 hover:text-emerald-600 border-3 border-slate-100 hover:border-emerald-200 rounded-2xl shadow-3xs cursor-pointer transition-all hover:scale-105 shrink-0"
+              title="Về trang chủ"
+              id="home-link-btn"
+            >
+              <Home className="h-5 w-5" />
+            </a>
 
-          {/* Golden stats board for the kid */}
-          <div className="flex items-center gap-2 sm:gap-3" id="stats-header-widget">
+            <button 
+              onClick={() => {
+                sounds.playClick();
+                setNavState('welcome');
+                setSelectedDay(null);
+              }} 
+              className="flex items-center gap-2 cursor-pointer transition-transform hover:scale-105 min-w-0"
+              id="brand-logo-btn"
+            >
+              <div className="px-4 sm:px-5 py-2.5 bg-gradient-to-br from-[#FFB74D] to-[#FF9800] text-white rounded-full font-black shadow-md transform -rotate-1 flex items-center gap-1.5 hover:rotate-0 transition-transform min-w-0">
+                <CuteIcon nameOrEmoji="☀️" className="h-6 w-6 shrink-0" />
+                <span className="text-base sm:text-lg font-black tracking-tight leading-none font-fredoka truncate">English Adventure</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Right group: Kid stats + Parent settings */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0" id="stats-header-widget">
             {stats.kidName && (
               <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-2xl border-4 border-emerald-200 bento-shadow" id="header-avatar-badge">
                 <div 
@@ -463,12 +533,6 @@ export default function App() {
             <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-2xl border-4 border-rose-200 bento-shadow" id="streak-total-badge">
               <Flame className="h-5 w-5 fill-rose-500 stroke-transparent animate-pulse" />
               <span className="text-xs sm:text-sm font-vietnamese font-black text-rose-700">{stats.currentStreak} Ngày</span>
-            </div>
-            
-            {/* Total Stars Badge in Header */}
-            <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-2xl border-4 border-amber-200 bento-shadow" id="stars-total-badge">
-              <Star className="h-5 w-5 fill-amber-400 stroke-transparent animate-pulse" />
-              <span className="text-xs sm:text-sm font-vietnamese font-black text-amber-700">{stats.totalStars} Sao</span>
             </div>
 
             {/* Parent Settings Cog */}
@@ -1032,6 +1096,7 @@ export default function App() {
                 onClick={() => {
                   sounds.playClick();
                   setIsParentModalOpen(false);
+                  resetSyncState();
                 }}
                 className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl h-8 w-8 rounded-full border border-slate-200 flex items-center justify-center cursor-pointer"
                 id="parent-modal-close"
@@ -1123,11 +1188,112 @@ export default function App() {
                     <span>Xóa Sạch Data & Chơi Lại Từ Đầu Tuần</span>
                   </button>
 
+                  {/* ĐỒNG BỘ TIẾN TRÌNH QUA THIẾT BỊ KHÁC */}
+                  <div className="bg-indigo-50/50 p-4 border border-indigo-100 rounded-3xl text-left flex flex-col gap-3 my-1">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-black text-indigo-800 flex items-center gap-1.5">
+                        <Share2 className="h-3.5 w-3.5" />
+                        Chuyển Tiến Trình Sang Máy Khác:
+                      </span>
+                      <span className="text-[11px] text-slate-500 font-semibold leading-relaxed">
+                        Tạo mã đồng bộ trên máy này, sau đó nhập mã đó trên điện thoại/máy tính khác để bé học tiếp đúng tiến trình, không bị mất sao đã tích lũy.
+                      </span>
+                    </div>
+
+                    {/* Toggle buttons: tạo mã / nhập mã */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          if (syncMode === 'export') {
+                            sounds.playClick();
+                            setSyncMode('none');
+                          } else {
+                            handleGenerateSyncCode();
+                          }
+                        }}
+                        className={`flex-1 py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${syncMode === 'export' ? 'bg-indigo-600 text-white' : 'bg-white border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50'}`}
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                        Tạo Mã Đồng Bộ
+                      </button>
+                      <button
+                        onClick={() => {
+                          sounds.playClick();
+                          if (syncMode === 'import') {
+                            setSyncMode('none');
+                          } else {
+                            setSyncMode('import');
+                            setImportSyncStatus('idle');
+                          }
+                        }}
+                        className={`flex-1 py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${syncMode === 'import' ? 'bg-indigo-600 text-white' : 'bg-white border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50'}`}
+                      >
+                        <ClipboardPaste className="h-3.5 w-3.5" />
+                        Nhập Mã
+                      </button>
+                    </div>
+
+                    {/* EXPORT: hiển thị mã vừa tạo */}
+                    {syncMode === 'export' && (
+                      <div className="flex flex-col gap-2 mt-1">
+                        <textarea
+                          readOnly
+                          value={generatedSyncCode}
+                          onFocus={(e) => e.target.select()}
+                          className="w-full text-[11px] font-mono p-3 rounded-xl border-2 border-indigo-200 bg-white resize-none h-20 break-all"
+                        />
+                        <button
+                          onClick={handleCopySyncCode}
+                          className="w-full py-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-black text-xs rounded-2xl flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                          {syncCodeCopied ? 'Đã Sao Chép! ✅' : 'Sao Chép Mã'}
+                        </button>
+                        <span className="text-[10px] text-slate-400 font-semibold leading-relaxed">
+                          Gửi mã này (qua Zalo, tin nhắn...) tới thiết bị khác, mở Góc Phụ Huynh &rarr; Nhập Mã.
+                        </span>
+                      </div>
+                    )}
+
+                    {/* IMPORT: nhập mã từ máy khác */}
+                    {syncMode === 'import' && (
+                      <div className="flex flex-col gap-2 mt-1">
+                        <textarea
+                          value={importSyncCodeInput}
+                          onChange={(e) => {
+                            setImportSyncCodeInput(e.target.value);
+                            setImportSyncStatus('idle');
+                          }}
+                          placeholder="Dán mã đồng bộ vào đây (bắt đầu bằng MEW1-...)"
+                          className="w-full text-[11px] font-mono p-3 rounded-xl border-2 border-indigo-200 bg-white resize-none h-20 break-all focus:outline-hidden focus:border-indigo-400"
+                        />
+                        <button
+                          onClick={handleApplySyncCode}
+                          disabled={!importSyncCodeInput.trim()}
+                          className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-black text-xs rounded-2xl flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                        >
+                          <ClipboardPaste className="h-3.5 w-3.5" />
+                          Khôi Phục Tiến Trình
+                        </button>
+                        {importSyncStatus === 'success' && (
+                          <span className="text-[11px] font-bold text-emerald-600">✅ Đã khôi phục tiến trình thành công!</span>
+                        )}
+                        {importSyncStatus === 'error' && (
+                          <span className="text-[11px] font-bold text-rose-500">❌ Mã không hợp lệ, bố mẹ kiểm tra lại nhé!</span>
+                        )}
+                        <span className="text-[10px] text-slate-400 font-semibold leading-relaxed">
+                          Lưu ý: Khôi phục sẽ ghi đè lên tiến trình hiện tại trên máy này.
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
                   <button
                     onClick={() => {
                       sounds.playClick();
                       setIsParentModalOpen(false);
                       setParentModeUnlocked(false);
+                      resetSyncState();
                     }}
                     className="w-full py-3 hover:bg-slate-50 text-slate-500 font-black text-xs rounded-2xl transition-colors cursor-pointer"
                   >
