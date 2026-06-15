@@ -202,6 +202,31 @@ export async function retrieveStats(defaultStats: UserStats): Promise<UserStats>
 }
 
 /**
+ * Completely clears stats from all sources.
+ */
+export async function clearAllStats(): Promise<void> {
+  try {
+    localStorage.removeItem('my_english_week_stats_v3');
+  } catch (e) {}
+  
+  setCookie('my_english_week_stats_v3', '', -1);
+
+  try {
+    const db = await openDB();
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).delete(KEY);
+  } catch (e) {}
+
+  // Xóa trắng luôn trên kho lưu trữ của Blogger mẹ
+  try {
+    window.parent.postMessage({
+      type: 'SAVE_PROGRESS',
+      progressData: ''
+    }, '*');
+  } catch (e) {}
+}
+
+/**
  * ====== ĐỒNG BỘ TIẾN TRÌNH QUA MÃ (CROSS-DEVICE SYNC CODE) ======
  * Cho phép phụ huynh tạo một "mã đồng bộ" chứa toàn bộ tiến trình học của bé,
  * rồi nhập mã đó trên máy/thiết bị khác để bé học tiếp không bị mất dữ liệu.
@@ -280,25 +305,4 @@ export async function applySyncCode(code: string): Promise<UserStats | null> {
   if (!stats) return null;
   await persistStats(stats);
   return stats;
-}
-
-  try {
-    localStorage.removeItem('my_english_week_stats_v3');
-  } catch (e) {}
-  
-  setCookie('my_english_week_stats_v3', '', -1);
-
-  try {
-    const db = await openDB();
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    tx.objectStore(STORE_NAME).delete(KEY);
-  } catch (e) {}
-
-  // Xóa trắng luôn trên kho lưu trữ của Blogger mẹ
-  try {
-    window.parent.postMessage({
-      type: 'SAVE_PROGRESS',
-      progressData: ''
-    }, '*');
-  } catch (e) {}
 }
