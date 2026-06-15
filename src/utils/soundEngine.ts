@@ -4,7 +4,8 @@
 class SoundEngine {
   private ctx: AudioContext | null = null;
 
-  private initCtx() {
+  // Đổi từ private thành public để useSpeech gọi kích hoạt từ bên ngoài nhằm chống block âm thanh
+  public initCtx() {
     if (!this.ctx) {
       this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     }

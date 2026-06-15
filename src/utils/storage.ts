@@ -82,7 +82,7 @@ async function loadFromIndexedDB(): Promise<UserStats | null> {
 }
 
 /**
- * Thêm helper để bắn tín hiệu đồng bộ lên trang cha (Blogger)
+ * Helper để bắn tín hiệu đồng bộ lên trang cha (Blogger)
  */
 function sendProgressToBlogger(jsonStr: string) {
   try {

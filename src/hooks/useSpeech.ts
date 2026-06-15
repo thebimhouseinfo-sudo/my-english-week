@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { sounds } from '../utils/soundEngine';
 
 export interface SpeechEngine {
   speak: (text: string, onEnd?: () => void) => void;
@@ -171,6 +172,9 @@ export function useSpeech(): SpeechEngine {
     // 1. Always clear any running speech/audio first
     stopSpeaking();
 
+    // ĐÁNH THỨC VÀ GIA HẠN LUỒNG AUDIOCONTEXT TRÊN IOS SAFARI TRƯỚC KHI BẮT ĐẦU PHÁT AUDIO/TTS
+    sounds.initCtx();
+
     // 2. Define the TTS fallback
     const playTTSFallback = () => {
       if (typeof window === 'undefined' || !window.speechSynthesis) {
@@ -314,6 +318,8 @@ export function useSpeech(): SpeechEngine {
     
     rec.onstart = () => {
       setIsListening(true);
+      // Phát âm thanh bíp báo hiệu bắt đầu thu âm thông qua AudioContext an toàn
+      sounds.playMicBeep();
     };
     
     rec.onresult = (event: any) => {
@@ -327,6 +333,9 @@ export function useSpeech(): SpeechEngine {
       }
       setIsListening(false);
       
+      // ĐÁNH THỨC LẠI AUDIOCONTEXT SAU KHI MIC ĐÓNG ĐỂ GIẢI PHÓNG LOA NGOÀI, SỬA LỖI SỤT ÂM LƯỢNG
+      sounds.initCtx();
+
       // If score is high or attempts >= 4, reset attempts
       if (score >= 3 || attemptsRef.current[sentenceId] >= 4) {
         attemptsRef.current[sentenceId] = 0;
@@ -347,6 +356,9 @@ export function useSpeech(): SpeechEngine {
       }
       setIsListening(false);
       
+      // ĐÁNH THỨC LẠI AUDIOCONTEXT KỂ CẢ KHI MIC GẶP LỖI ĐỂ TRÁNH NGHẸT TIẾNG
+      sounds.initCtx();
+
       // If error and attempts are high, trigger auto pass
       setTimeout(() => {
         if (attemptsRef.current[sentenceId] >= 4) {
@@ -360,6 +372,8 @@ export function useSpeech(): SpeechEngine {
     
     rec.onend = () => {
       setIsListening(false);
+      // ĐẢM BẢO KHÔI PHỤC LẠI LUỒNG LOA KHI KẾT THÚC VÒNG ĐỜI CỦA MIC
+      sounds.initCtx();
     };
     
     recognitionRef.current = rec;
@@ -379,6 +393,7 @@ export function useSpeech(): SpeechEngine {
       recognitionRef.current.stop();
     }
     setIsListening(false);
+    sounds.initCtx();
   };
 
   useEffect(() => {
