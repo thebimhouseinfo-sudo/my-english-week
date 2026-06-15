@@ -188,42 +188,60 @@ export function getPhrasesByIntent(intentId: string): PhraseItem[] {
 }
 
 /**
+ * Maximum number of practice sentences per scene.
+ * Học quá nhiều câu trong 1 scene không tốt cho bé, nên giới hạn tối đa 6 câu.
+ */
+const MAX_PHRASES_PER_SCENE = 6;
+
+/**
  * Load all phrases required for an entire scenario
  */
 export function getPhrasesForScenario(scenarioId: string): PhraseItem[] {
   const scen = scenarios[scenarioId];
   if (!scen) return [];
 
-  let matched: PhraseItem[] = [];
-  scen.intents.forEach((intent) => {
-    const pList = getPhrasesByIntent(intent);
-    if (pList.length > 0) {
-      // Add all matched phrases
-      matched.push(...pList);
-    }
-  });
-
   // Filter out mismatched phrases based on meal/time context
   const isBreakfastScenario = scenarioId.includes('breakfast');
   const isDinnerScenario = scenarioId.includes('dinner');
 
-  if (isBreakfastScenario) {
-    matched = matched.filter((p) => {
-      const idUpper = p.id.toUpperCase();
-      const enUpper = p.en.toUpperCase();
+  const filterContext = (p: PhraseItem) => {
+    const idUpper = p.id.toUpperCase();
+    const enUpper = p.en.toUpperCase();
+    if (isBreakfastScenario) {
       return !idUpper.includes('DINNER') && !enUpper.includes('DINNER') &&
              !idUpper.includes('NIGHT') && !enUpper.includes('NIGHT');
-    });
-  } else if (isDinnerScenario) {
-    matched = matched.filter((p) => {
-      const idUpper = p.id.toUpperCase();
-      const enUpper = p.en.toUpperCase();
+    }
+    if (isDinnerScenario) {
       return !idUpper.includes('BREAKFAST') && !enUpper.includes('BREAKFAST') &&
              !idUpper.includes('MORNING') && !enUpper.includes('MORNING');
-    });
+    }
+    return true;
+  };
+
+  // Build per-intent lists (already filtered), preserving the intent order from the scenario
+  const perIntentLists: PhraseItem[][] = scen.intents.map((intent) =>
+    getPhrasesByIntent(intent).filter(filterContext)
+  );
+
+  // Round-robin across intents so the selected phrases stay varied
+  // instead of always taking the first intent's full list.
+  const matched: PhraseItem[] = [];
+  let exhausted = false;
+  let round = 0;
+  while (!exhausted && matched.length < MAX_PHRASES_PER_SCENE) {
+    exhausted = true;
+    for (const list of perIntentLists) {
+      if (round < list.length) {
+        matched.push(list[round]);
+        exhausted = false;
+        if (matched.length >= MAX_PHRASES_PER_SCENE) break;
+      }
+    }
+    round++;
   }
 
-  return matched;
+  // Giới hạn tối đa MAX_PHRASES_PER_SCENE câu cho mỗi scene
+  return matched.slice(0, MAX_PHRASES_PER_SCENE);
 }
 
 /**
@@ -254,4 +272,3 @@ export function getStorySkeletonForDay(dayType: 'weekday' | 'saturday' | 'sunday
 export function getReviewQuestion(scenarioId: string): ReviewQuestion[] {
   return reviewTemplates[scenarioId] || [];
 }
-

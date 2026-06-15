@@ -71,4 +71,7 @@ export interface UserStats {
   daysPlayed: number;
   bestPhrases: BestPhrase[];
   streakDays?: number;
+  // Lưu vị trí scene đang học gần nhất để bé vào lại học tiếp, không phải học lại từ đầu
+  lastPlayedDay?: DayName | null;
+  lastSceneIndex?: number;
 }

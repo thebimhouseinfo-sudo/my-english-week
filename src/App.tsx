@@ -97,7 +97,9 @@ const DEFAULT_STATS: UserStats = {
   totalSentencesSpoken: 0,
   spokenPhraseIds: [],
   daysPlayed: 0,
-  bestPhrases: []
+  bestPhrases: [],
+  lastPlayedDay: null,
+  lastSceneIndex: 0
 };
 
 export default function App() {
@@ -206,6 +208,25 @@ export default function App() {
     persistStats(newStats).catch(console.error);
   };
 
+  // Lưu lại vị trí scene hiện tại mỗi khi bé tiến qua một câu/scene mới,
+  // để nếu bé thoát app giữa bài học thì lần sau vào lại sẽ tiếp tục đúng chỗ đó
+  useEffect(() => {
+    if (navState !== 'playing' || !selectedDay) return;
+
+    setStats(prev => {
+      if (prev.lastPlayedDay === selectedDay && prev.lastSceneIndex === dayProgression.currentSceneIndex) {
+        return prev;
+      }
+      const updated: UserStats = {
+        ...prev,
+        lastPlayedDay: selectedDay,
+        lastSceneIndex: dayProgression.currentSceneIndex
+      };
+      persistStats(updated).catch(console.error);
+      return updated;
+    });
+  }, [navState, selectedDay, dayProgression.currentSceneIndex]);
+
   // Register and persist speech telemetry events in real-time
   const registerSpeechReport = (text: string, stars: number) => {
     if (stars < 3) return; // Only process pass scores (>= 3 stars)
@@ -271,11 +292,16 @@ export default function App() {
     sounds.playClick();
     setSelectedDay(day);
     setNavState('playing');
-    
+
+    // Nếu bé đang quay lại đúng ngày đang học dở, khôi phục lại scene đã dừng trước đó
+    const resumeIndex = (stats.lastPlayedDay === day && typeof stats.lastSceneIndex === 'number')
+      ? stats.lastSceneIndex
+      : 0;
+
     // Construct default progression for the chosen day
     const defaultProg: DayProgression = {
       dayName: day,
-      currentSceneIndex: 0,
+      currentSceneIndex: resumeIndex,
       selectedBreakfast: null,
       bathroomActions: [],
       weekendActivity: null,
@@ -352,7 +378,10 @@ export default function App() {
       totalSentencesSpoken: stats.totalSentencesSpoken,
       spokenPhraseIds: stats.spokenPhraseIds,
       daysPlayed: (stats.daysPlayed || 0) + 1,
-      bestPhrases: stats.bestPhrases
+      bestPhrases: stats.bestPhrases,
+      // Đã hoàn thành ngày này, xóa vị trí tiếp tục để lần sau bắt đầu lại từ đầu nếu chọn lại ngày này
+      lastPlayedDay: null,
+      lastSceneIndex: 0
     };
 
     saveStats(newStats);
