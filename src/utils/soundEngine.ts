@@ -3,6 +3,7 @@
 
 class SoundEngine {
   private ctx: AudioContext | null = null;
+  private unlocked = false;
 
   // Đổi từ private thành public để useSpeech gọi kích hoạt từ bên ngoài nhằm chống block âm thanh
   public initCtx() {
@@ -11,6 +12,20 @@ class SoundEngine {
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
+    }
+    // Phát một âm thanh câm (silent buffer) để "mở khóa" hoàn toàn audio session trên iOS,
+    // giúp âm lượng giữ ổn định và cho phép autoplay sau khi dùng micro
+    if (!this.unlocked) {
+      try {
+        const buffer = this.ctx.createBuffer(1, 1, 22050);
+        const source = this.ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.ctx.destination);
+        source.start(0);
+        this.unlocked = true;
+      } catch (e) {
+        // Ignore
+      }
     }
     return this.ctx;
   }

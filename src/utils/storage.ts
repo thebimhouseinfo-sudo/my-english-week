@@ -153,8 +153,8 @@ export async function retrieveStats(defaultStats: UserStats): Promise<UserStats>
     console.warn('Không thể gửi yêu cầu dữ liệu lên trang mẹ:', e);
   }
 
-  // Chờ một khoảng thời gian siêu ngắn (khoảng 80ms) để sự kiện message kịp phản hồi từ trang mẹ
-  await new Promise((resolve) => setTimeout(resolve, 80));
+  // Chờ một khoảng thời gian siêu ngắn (khoảng 300ms) để sự kiện message kịp phản hồi từ trang mẹ
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
   // ƯU TIÊN SỐ 1: Nếu nhận được dữ liệu cứu cánh từ Blogger, lấy dùng ngay!
   if (bloggerRestoredStats) {

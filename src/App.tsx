@@ -114,15 +114,36 @@ export default function App() {
   const [selectedDayOnHome, setSelectedDayOnHome] = useState<DayName>('Monday');
   const [tempName, setTempName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('🦊');
-  const [showiOSBanner, setShowiOSBanner] = useState(false);
+  const [showMobileTipBanner, setShowMobileTipBanner] = useState(false);
+  const [isIOSDevice, setIsIOSDevice] = useState(false);
+
+  const MOBILE_TIP_DISMISSED_KEY = 'my_english_week_mobile_tip_dismissed';
 
   useEffect(() => {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+    const isAndroid = /Android/.test(ua);
+    const isMobile = isIOS || isAndroid;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
-    if (isIOS && !isStandalone) {
-      setShowiOSBanner(true);
+
+    let alreadyDismissed = false;
+    try {
+      alreadyDismissed = localStorage.getItem(MOBILE_TIP_DISMISSED_KEY) === '1';
+    } catch (e) {}
+
+    setIsIOSDevice(isIOS);
+
+    if (isMobile && !isStandalone && !alreadyDismissed) {
+      setShowMobileTipBanner(true);
     }
   }, []);
+
+  const dismissMobileTipBanner = () => {
+    setShowMobileTipBanner(false);
+    try {
+      localStorage.setItem(MOBILE_TIP_DISMISSED_KEY, '1');
+    } catch (e) {}
+  };
 
   // Parent control states
   const [isParentModalOpen, setIsParentModalOpen] = useState(false);
@@ -434,19 +455,23 @@ export default function App() {
         </div>
       </header>
  
-      {/* iOS Safari banner */}
-      {showiOSBanner && (
-        <div className="max-w-5xl mx-auto px-4 mt-4" id="ios-safari-banner">
+      {/* Mobile (iOS/Android, any browser) tip banner - shown only once */}
+      {showMobileTipBanner && (
+        <div className="max-w-5xl mx-auto px-4 mt-4" id="mobile-tip-banner">
           <div className="bg-amber-50 border-4 border-amber-200 rounded-[2rem] p-4.5 flex items-start gap-3 shadow-xs relative">
             <span className="text-2xl shrink-0 mt-0.5">💡</span>
             <div className="flex flex-col gap-1 text-xs sm:text-sm text-amber-900 font-vietnamese">
-              <span className="font-black text-amber-955">Mẹo học hay trên iPhone / iPad:</span>
+              <span className="font-black text-amber-955">Mẹo học hay trên điện thoại:</span>
               <p className="font-medium opacity-90 leading-relaxed">
-                Để không bị mất tiến trình học và không cần cấp quyền micro mỗi lần vào lại, bố mẹ hãy nhấn nút <strong className="font-bold text-amber-950">Chia sẻ (Share) 📤</strong> trên Safari &rarr; chọn <strong className="font-bold text-amber-955">"Thêm vào MH chính" (Add to Home Screen)</strong> nhé!
+                Để không bị mất tiến trình học và không cần cấp quyền micro mỗi lần vào lại, bố mẹ hãy thêm trang này vào màn hình chính nhé!{' '}
+                {isIOSDevice
+                  ? <>Trên Safari: nhấn nút <strong className="font-bold text-amber-950">Chia sẻ (Share) 📤</strong> &rarr; chọn <strong className="font-bold text-amber-955">"Thêm vào MH chính" (Add to Home Screen)</strong>.</>
+                  : <>Trên Chrome: nhấn nút <strong className="font-bold text-amber-950">Menu (⋮)</strong> &rarr; chọn <strong className="font-bold text-amber-955">"Thêm vào màn hình chính" (Add to Home screen)</strong>.</>
+                }
               </p>
             </div>
             <button
-              onClick={() => setShowiOSBanner(false)}
+              onClick={dismissMobileTipBanner}
               className="absolute top-2.5 right-4 text-amber-500 hover:text-amber-750 font-bold text-sm cursor-pointer"
             >
               ✕

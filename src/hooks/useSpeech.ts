@@ -19,7 +19,51 @@ export function useSpeech(): SpeechEngine {
   const recognitionRef = useRef<any>(null);
   const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  
+
+  // Audio element được "mở khóa" và tái sử dụng cho mọi lượt phát,
+  // giúp âm lượng và autoplay ổn định trên iOS Safari (tránh tạo Audio() mới mỗi lần)
+  const pooledAudioRef = useRef<HTMLAudioElement | null>(null);
+  const audioUnlockedRef = useRef(false);
+
+  const getPooledAudio = (): HTMLAudioElement => {
+    if (!pooledAudioRef.current) {
+      pooledAudioRef.current = new Audio();
+      pooledAudioRef.current.setAttribute('playsinline', 'true');
+    }
+    return pooledAudioRef.current;
+  };
+
+  // Mở khóa audio element ngay khi có tương tác đầu tiên của người dùng,
+  // bằng cách phát một file câm rất ngắn để "kích hoạt" audio session trên iOS
+  const unlockAudio = () => {
+    if (audioUnlockedRef.current) return;
+    audioUnlockedRef.current = true;
+    try {
+      const audio = getPooledAudio();
+      audio.src = 'data:audio/mp3;base64,SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQxAADB8AhSmxhIIEVCSiJrDCABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+      audio.volume = 1.0;
+      const p = audio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+        }).catch(() => {});
+      }
+    } catch (e) {
+      // Ignore
+    }
+  };
+
+  useEffect(() => {
+    const handler = () => unlockAudio();
+    window.addEventListener('touchstart', handler, { once: true, capture: true });
+    window.addEventListener('click', handler, { once: true, capture: true });
+    return () => {
+      window.removeEventListener('touchstart', handler, true);
+      window.removeEventListener('click', handler, true);
+    };
+  }, []);
+
   // Track consecutive microphone attempts for each distinct expected text to trigger AUTO PASS
   const attemptsRef = useRef<Record<string, number>>({});
 
@@ -128,10 +172,15 @@ export function useSpeech(): SpeechEngine {
     }
 
     const url = urls[index];
-    const audio = new Audio();
+    // Tái sử dụng audio element đã unlock thay vì tạo mới mỗi lần,
+    // tránh hiện tượng âm lượng tự giảm dần trên iOS Safari
+    const audio = getPooledAudio();
+    audio.pause();
+    audio.currentTime = 0;
     audio.preload = 'auto';
     audio.src = url;
     audio.volume = 1.0;
+    audio.muted = false;
     audioRef.current = audio;
 
     let isDone = false;
@@ -219,6 +268,7 @@ export function useSpeech(): SpeechEngine {
       "7 30": "seven thirty",
       "7 20": "seven twenty",
       "7 00": "seven o'clock",
+      "8 30": "eight thirty",
       "6 00": "six o'clock",
       "6 05": "six oh five",
       "6 15": "six fifteen",
@@ -236,6 +286,10 @@ export function useSpeech(): SpeechEngine {
       
       // Replace slashes, colons, dots between digits with spaces so "7:20", "7/20", "7.20" become "7 20"
       res = res.replace(/(\d)[/:\.](\d)/g, "$1 $2");
+
+      // SỬA LỖI: Speech recognition thường nghe "seven twenty" thành số liền "720" (không dấu hai chấm).
+      // Tách số liền 3-4 chữ số thành "giờ phút", ví dụ "720" -> "7 20", "1230" -> "12 30"
+      res = res.replace(/\b(\d{1,2})(\d{2})\b/g, "$1 $2");
       
       // Translate common time strings to words
       Object.keys(timeMap).forEach(k => {
@@ -268,7 +322,7 @@ export function useSpeech(): SpeechEngine {
     // Longest Common Subsequence to enforce order while allowing dropped/extra words
     const m = expWords.length;
     const n = actWords.length;
-    if (m === 0 || n === 0) return 0;
+    if (m === 0 || n === 0) return 1;
 
     const dp = Array(m + 1).fill(0).map(() => Array(n + 1).fill(0));
     
@@ -289,8 +343,7 @@ export function useSpeech(): SpeechEngine {
     if (ratio >= 0.75) return 4; // 4 stars (great)
     if (ratio >= 0.5) return 3;  // 3 stars (good)
     if (ratio >= 0.25) return 2;  // 2 stars (okay)
-    if (ratio > 0) return 1;     // 1 star (needs practice)
-    return 0;
+    return 1; // Minimum 1 star - luôn khích lệ bé, không chấm 0 điểm
   };
 
   const startListening = (expectedText: string, sentenceId: string, onResult: (transcript: string, score: number) => void) => {
@@ -300,7 +353,7 @@ export function useSpeech(): SpeechEngine {
     if (!SpeechRecognition) {
       console.warn('Speech recognition not supported in this browser.');
       setTimeout(() => {
-        onResult('', 0);
+        onResult('', 1);
       }, 100);
       return;
     }
@@ -365,7 +418,7 @@ export function useSpeech(): SpeechEngine {
           attemptsRef.current[sentenceId] = 0;
           onResult('', 4);
         } else {
-          onResult('', 0);
+          onResult('', 1);
         }
       }, 350);
     };
@@ -383,7 +436,7 @@ export function useSpeech(): SpeechEngine {
       console.error('Failed to start speech recognition:', e);
       setIsListening(false);
       setTimeout(() => {
-        onResult('', 0);
+        onResult('', 1);
       }, 100);
     }
   };

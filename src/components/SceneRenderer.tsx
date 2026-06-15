@@ -542,8 +542,7 @@ export default function SceneRenderer({
                   {completedLines[currentLine.id].stars === 4 && '✨ Phát âm rành rọt! Qua câu ngay lập tức!'}
                   {completedLines[currentLine.id].stars === 3 && '👍 Tốt lắm! Cần gom 5 điểm. Được +3 điểm'}
                   {completedLines[currentLine.id].stars === 2 && '💪 Cố lên nhé! Cần gom 5 điểm. Được +2 điểm'}
-                  {completedLines[currentLine.id].stars === 1 && '💡 Nháp thử thôi! Cần gom 5 điểm. Được +1 điểm'}
-                  {completedLines[currentLine.id].stars === 0 && '❌ Đọc lại nhé bé ơi! Được 0 điểm. (Đọc 4 lần tự qua)'}
+                  {completedLines[currentLine.id].stars === 1 && '💡 Cố lên nhé bé ơi, thử lại nha! Được +1 điểm'}
                 </span>
                 {completedLines[currentLine.id].transcript && (
                   <span className="text-xs text-slate-500 font-vietnamese italic font-semibold">
