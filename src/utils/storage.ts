@@ -1,5 +1,9 @@
 import { UserStats } from '../types';
 
+// Biến lưu trữ tạm thời dữ liệu khôi phục từ Blogger trong quá trình load app
+let bloggerRestoredStats: UserStats | null = null;
+let isBloggerListenerInitialized = false;
+
 // Simple cookie get/set helpers
 function setCookie(name: string, value: string, days = 365) {
   try {
@@ -78,7 +82,21 @@ async function loadFromIndexedDB(): Promise<UserStats | null> {
 }
 
 /**
- * Saves stats to localStorage, Cookies, and IndexedDB.
+ * Thêm helper để bắn tín hiệu đồng bộ lên trang cha (Blogger)
+ */
+function sendProgressToBlogger(jsonStr: string) {
+  try {
+    window.parent.postMessage({
+      type: 'SAVE_PROGRESS',
+      progressData: jsonStr
+    }, '*');
+  } catch (e) {
+    console.warn('PostMessage gửi tới Blogger thất bại:', e);
+  }
+}
+
+/**
+ * Saves stats to localStorage, Cookies, IndexedDB, and Blogger parent window.
  */
 export async function persistStats(stats: UserStats): Promise<void> {
   const jsonStr = JSON.stringify(stats);
@@ -95,13 +113,55 @@ export async function persistStats(stats: UserStats): Promise<void> {
 
   // 3. IndexedDB
   await saveToIndexedDB(stats);
+
+  // 4. Đồng bộ ra Blogger bên ngoài
+  sendProgressToBlogger(jsonStr);
 }
 
 /**
- * Loads stats using all three sources (localStorage, Cookies, and IndexedDB)
+ * Loads stats using all sources (Blogger Message, localStorage, Cookies, and IndexedDB)
  * to ensure maximum reliability and recovery on iOS Safari.
  */
 export async function retrieveStats(defaultStats: UserStats): Promise<UserStats> {
+  // BƯỚC KHỞI ĐẦU: Thiết lập lắng nghe phản hồi dữ liệu từ Blogger nếu chưa làm
+  if (!isBloggerListenerInitialized) {
+    isBloggerListenerInitialized = true;
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'RESPONSE_PROGRESS') {
+        const rawData = event.data.progressData;
+        if (rawData) {
+          try {
+            bloggerRestoredStats = JSON.parse(rawData);
+            // Tiện tay khôi phục lại bộ nhớ đệm local phòng hờ
+            localStorage.setItem('my_english_week_stats_v3', rawData);
+            setCookie('my_english_week_stats_v3', rawData);
+            if (bloggerRestoredStats) {
+              saveToIndexedDB(bloggerRestoredStats).catch(console.error);
+            }
+          } catch (e) {
+            console.error('Lỗi phân tích dữ liệu nhận từ Blogger:', e);
+          }
+        }
+      }
+    });
+  }
+
+  // PHÁT TÍN HIỆU ĐÒI DỮ LIỆU TỪ BLOGGER MẸ
+  try {
+    window.parent.postMessage({ type: 'REQUEST_PROGRESS' }, '*');
+  } catch (e) {
+    console.warn('Không thể gửi yêu cầu dữ liệu lên trang mẹ:', e);
+  }
+
+  // Chờ một khoảng thời gian siêu ngắn (khoảng 80ms) để sự kiện message kịp phản hồi từ trang mẹ
+  await new Promise((resolve) => setTimeout(resolve, 80));
+
+  // ƯU TIÊN SỐ 1: Nếu nhận được dữ liệu cứu cánh từ Blogger, lấy dùng ngay!
+  if (bloggerRestoredStats) {
+    return bloggerRestoredStats;
+  }
+
+  // --- CƠ CHẾ DỰ PHÒNG CŨ (Khi chạy độc lập không qua iFrame Blogger) ---
   let loadedStr: string | null = null;
 
   // 1. Try LocalStorage
@@ -142,7 +202,7 @@ export async function retrieveStats(defaultStats: UserStats): Promise<UserStats>
 }
 
 /**
- * Completely clears stats from all three sources.
+ * Completely clears stats from all sources.
  */
 export async function clearAllStats(): Promise<void> {
   try {
@@ -155,5 +215,13 @@ export async function clearAllStats(): Promise<void> {
     const db = await openDB();
     const tx = db.transaction(STORE_NAME, 'readwrite');
     tx.objectStore(STORE_NAME).delete(KEY);
+  } catch (e) {}
+
+  // Xóa trắng luôn trên kho lưu trữ của Blogger mẹ
+  try {
+    window.parent.postMessage({
+      type: 'SAVE_PROGRESS',
+      progressData: ''
+    }, '*');
   } catch (e) {}
 }
